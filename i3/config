@@ -223,7 +223,6 @@ bindsym $mod+Shift+Delete exec i3lock -c $bg-color
 exec_always --no-startup-id ~/.config/polybar/launch.sh
 exec_always --no-startup-id xrandr --output DVI-I-1 --right-of HDMI-0
 exec_always --no-startup-id feh --bg-scale ~/.wallpaper/wallpaper.jpg
-exec_always --no-startup-id conky
 
 # gaps stuff
 
