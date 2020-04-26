@@ -1,0 +1,11 @@
+[Unit]
+Description=Lock screen before suspend
+Before=sleep.target
+
+[Service]
+User=matt
+Type=forking
+ExecStart=/home/matt/.config/i3/lockscreen.sh
+
+[Install]
+WantedBy=sleep.target
