@@ -5,7 +5,7 @@
  *
  * font: see http://freedesktop.org/software/fontconfig/fontconfig-user.html
  */
-static char *font = "PxPlus IBM VGA8:pixelsize=15";
+static char *font = "Iosevka Medium:pixelsize=13";
 static int borderpx = 2;
 
 /*
@@ -83,29 +83,29 @@ char *termname = "st-256color";
 unsigned int tabspaces = 8;
 
 /* bg opacity */
-float alpha = 0.8;
+float alpha = 0.45;
 
 /* Terminal colors (16 first used in escape sequence) */
 static const char *colorname[] = {
-	/* 8 normal colors */
-	"#000000",
-	"#fa0000",
-	"#29bf18",
-	"#b26818",
-	"#7d9823",
-	"#e11ee1",
-	"#0086df",
-	"#0a68ff",
+	/* 8 normal colorS */
+	"#073642",
+	"#dc322f",
+	"#859900",
+	"#b58900",
+	"#268bd2",
+	"#d33682",
+	"#2aa198",
+	"#839496",
 
 	/* 8 bright colors */
-	"#686868",
-	"#4b5dff",
-	"#42b917",
-	"#ffff54",
-	"#7a05ff",
-	"#7d3ebc",
-	"#01c8ff",
-	"#323232",
+	"#002b36",
+	"#cb4b16",
+	"#3f7549",
+    "#657b84",
+	"#196495",
+	"#6c71c4",
+	"#196495",
+	"#fdf6e3",
 
 	[255] = 0,
 
