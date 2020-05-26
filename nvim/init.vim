@@ -6,7 +6,7 @@ call plug#begin()
 
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'ctrlpvim/ctrlp.vim'
-Plug 'cjrh/vim-conda'
+"Plug 'cjrh/vim-conda'
 Plug 'airblade/vim-gitgutter'
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
@@ -16,6 +16,7 @@ Plug 'nanotech/jellybeans.vim'
 Plug 'chriskempson/base16-vim'
 Plug 'ajh17/spacegray.vim'
 Plug 'joshdick/onedark.vim'
+Plug 'flazz/vim-colorschemes'
 
 let g:python_host_prog='$HOME/anaconda3/envs/neovim'
 
@@ -172,6 +173,8 @@ nmap <silent> gr <Plug>(coc-references)
 map <C-d> :Lex<CR>
 map <F4> :CondaChangeEnv<CR>
 
+let g:conda_startup_msg_suppress = 1
+
 let g:netrw_banner = 0
 let g:netrw_browse_split = 0
 let g:netrw_winsize = 25
@@ -180,10 +183,10 @@ let g:netrw_winsize = 25
 
 let g:airline#extensions#tabline#enabled=1
 let g:airline_powerline_fonts=1
-let g:airline_theme='onedark'
+let g:airline_theme='gruvbox'
 
 let g:onedark_terminal_italics=1
-colorscheme onedark
+colorscheme gruvbox
 
 " ---- General settings ----
 set backspace=indent,eol,start
