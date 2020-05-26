@@ -42,7 +42,7 @@ floating_modifier $mod
 
 # start a terminal
 #bindsym $mod+Return exec konsole --hide-menubar --hide-tabbar
-bindsym $mod+Return exec st
+bindsym $mod+Return exec termite
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -107,9 +107,12 @@ bindsym $mod+a focus parent
 
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
-set $ws1 "1 "
-set $ws2 "2 龜"
-set $ws3 "3 "
+#set $ws1 "1 "
+#set $ws2 "2 龜"
+#set $ws3 "3 "
+set $ws1 "1"
+set $ws2 "2"
+set $ws3 "3"
 set $ws4 "4"
 set $ws5 "5"
 set $ws6 "6"
@@ -142,10 +145,6 @@ bindsym $mod+Shift+8 move container to workspace number $ws8
 bindsym $mod+Shift+9 move container to workspace number $ws9
 bindsym $mod+Shift+0 move container to workspace number $ws10
 
-# assign workspaces for specific programs
-assign [class="firefox"] $ws2
-assign [class="Skype"] $ws3
-
 
 # reload the configuration file
 bindsym $mod+Shift+c reload
@@ -161,6 +160,7 @@ bindsym $mod+Shift+F1 exec firefox
 for_window [class="firefox" instance="Places"] floating enable
 for_window [class="Pavucontrol"] floating enable
 for_window [class="Skype"] floating enable
+for_window [class="core-Main"] floating enable
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
@@ -351,5 +351,5 @@ mode "$mode_gaps_left" {
         bindsym Escape mode "default"
 }
 
-exec_always --no-startup-id compton -f
-
+exec_always --no-startup-id compton -f -b -z -G --no-fading-openclose --xrender-sync-fence --no-fading-destroyed-argb
+exec_always --no-startup-id dunst
