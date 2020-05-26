@@ -3,16 +3,10 @@
 How to setup i3.
 
 Install i3-gaps.
-Install compton, feh, ranger via Pacman
+Install compton, feh, ranger, dunst, termite via Pacman
 Install polybar, multilockscreen-git, dmenu2 via AUR
 
 Copy .fonts from this repo into home directory.
-
-Download st-0.8.2 from website and extract.
-Download the st-aplha, st-scrollback, and st-scrollback-mouse patches and use git apply
-to apply the patches. You may need to do git apply --reject on the mouse patch and manually add
-in some lines (like extern MouseKey mkeys[] in st.h)
-Copy config.h from this repo into st folder, then run sudo make clean install.
 
 Create .wallpaper dir in home, then move whatever image you want to be your wallpaper into this folder.
 Name the image wallpaper.jpg
