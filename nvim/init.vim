@@ -16,6 +16,7 @@ Plug 'nanotech/jellybeans.vim'
 Plug 'chriskempson/base16-vim'
 Plug 'ajh17/spacegray.vim'
 Plug 'joshdick/onedark.vim'
+Plug 'tpope/vim-vinegar'
 "Plug 'flazz/vim-colorschemes'
 
 let g:python_host_prog='$HOME/anaconda3/envs/neovim'
@@ -181,6 +182,9 @@ let g:netrw_winsize = 25
 "let g:netrw_liststyle = 3
 "let g:netrw_sort_options = 'i'
 
+" Set pwd to directory of file (or the directory entered)
+"autocmd VimEnter * cd %:h
+
 let g:airline#extensions#tabline#enabled=1
 let g:airline_powerline_fonts=1
 let g:airline_theme='onedark'
@@ -216,6 +220,7 @@ set wildmenu
 set mouse=a
 set encoding=utf-8
 set autoindent
+set autochdir
 syntax on
 " ---- Indentation ----
 set expandtab
