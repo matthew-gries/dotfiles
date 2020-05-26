@@ -3,7 +3,7 @@
 How to setup i3.
 
 Install i3-gaps.
-Install compton, feh, ranger, dunst, termite via Pacman
+Install compton, feh, ranger, dunst, termite, tree, fzf, powerline, powerline-fonts via Pacman
 Install polybar, multilockscreen-git, dmenu2 via AUR
 
 Copy .fonts from this repo into home directory.
