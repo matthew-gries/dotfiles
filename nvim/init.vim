@@ -171,7 +171,7 @@ nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 
-map <C-d> :Lex<CR>
+map <C-q> :Lex<CR>
 map <F4> :CondaChangeEnv<CR>
 
 let g:conda_startup_msg_suppress = 1
