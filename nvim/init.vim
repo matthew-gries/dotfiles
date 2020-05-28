@@ -205,6 +205,9 @@ if (empty($TMUX))
   endif
 endif
 
+let g:ctrlp_working_path_mode = 0
+map <C-x> :CtrlPDir<CR>
+
 let g:onedark_terminal_italics=1
 colorscheme onedark
 
@@ -220,7 +223,7 @@ set wildmenu
 set mouse=a
 set encoding=utf-8
 set autoindent
-set autochdir
+"set autochdir
 syntax on
 " ---- Indentation ----
 set expandtab
