@@ -207,6 +207,7 @@ endif
 
 let g:ctrlp_working_path_mode = 0
 map <C-x> :CtrlPDir<CR>
+map <C-b> :CtrlPBuffer<CR>
 
 let g:onedark_terminal_italics=1
 colorscheme onedark
