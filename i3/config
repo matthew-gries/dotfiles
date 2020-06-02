@@ -13,7 +13,7 @@ set $mod Mod4
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
-font pango:iosevka-extendedthin 12
+font pango:iosevka-light 12
 
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
@@ -48,7 +48,7 @@ bindsym $mod+Return exec termite
 bindsym $mod+Shift+q kill
 
 # start dmenu (a program launcher)
-bindsym $mod+d exec dmenu_run -p 'Hey clown!' -fn 'iosevka-extendedthin:pixelsize=14' -h 32
+bindsym $mod+d exec dmenu_run -p 'Hey clown!' -fn 'iosevka-light:pixelsize=15' -h 32 -nb '#2e3440' -sf '#2e3440' -sb '#a3be8c' -nf '#a3be8c'
 # There also is the (new) i3-dmenu-desktop which only displays applications
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that
 # installed.
@@ -351,6 +351,7 @@ mode "$mode_gaps_left" {
         bindsym Escape mode "default"
 }
 
-exec_always --no-startup-id compton -f -b -z -G --no-fading-openclose --xrender-sync-fence --no-fading-destroyed-argb
+#exec_always --no-startup-id compton -f -b -z -G --no-fading-openclose --xrender-sync-fence --no-fading-destroyed-argb
+exec_always --no-startup-id compton
 exec_always --no-startup-id dunst
-exec_always --no-startup-id xautolock -time 2 -locker ~/.config/i3/lockscreen.sh
+exec_always --no-startup-id xautolock -time 5 -locker ~/.config/i3/lockscreen.sh
