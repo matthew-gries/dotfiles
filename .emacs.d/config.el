@@ -1,1 +1,17 @@
 
+;; (evil-mode 1)
+(set-frame-font "Iosevka Light 12" nil t)
+(load-theme 'atom-one-dark t)
+(menu-bar-mode 0)
+(tool-bar-mode 0)
+(set-scroll-bar-mode nil)
+(which-key-mode)
+(projectile-mode +1)
+(define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
+(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+(ivy-mode 1)
+(load-theme 'airline-onedark t)
+(turn-on-page-break-lines-mode)
+(dashboard-setup-startup-hook)
+
+(global-set-key [f8] 'neotree-toggle)
