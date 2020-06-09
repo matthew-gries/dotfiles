@@ -1,5 +1,3 @@
-
-;; (evil-mode 1)
 (set-frame-font "Iosevka Light 12" nil t)
 (load-theme 'atom-one-dark t)
 (menu-bar-mode 0)
@@ -13,5 +11,28 @@
 (load-theme 'airline-onedark t)
 (turn-on-page-break-lines-mode)
 (dashboard-setup-startup-hook)
+(global-display-line-numbers-mode)
 
 (global-set-key [f8] 'neotree-toggle)
+
+(add-hook 'after-init-hook 'global-company-mode)
+(add-hook 'after-init-hook #'global-flycheck-mode)
+
+(setq dashboard-banner-logo-title "Uh oh, stinky...")
+(setq dashboard-items '((recents  . 5)
+                        (bookmarks . 5)
+                        (projects . 5)
+                        (agenda . 5)
+                        (registers . 5)))
+(setq dashboard-startup-banner 3)
+(setq dashboard-center-content t)
+(setq neo-theme (if (display-graphic-p) 'icons 'arrow))
+
+(setq c-default-style "linux")
+(setq c-basic-offset 4)
+
+(global-set-key (kbd "C-:") 'avy-goto-char)
+(global-set-key (kbd "C-'") 'avy-goto-char-2)
+(global-set-key (kbd "M-g f") 'avy-goto-line)
+(global-set-key (kbd "M-g w") 'avy-goto-word-1)
+(global-set-key (kbd "M-g e") 'avy-goto-word-0)

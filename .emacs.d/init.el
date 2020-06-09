@@ -24,14 +24,27 @@ There are two things you can do about this warning:
     ("d1af5ef9b24d25f50f00d455bd51c1d586ede1949c5d2863bef763c60ddf703a" default)))
  '(package-selected-packages
    (quote
-    (all-the-icons neotree dashboard airline-themes powerline counsel projectile which-key atom-one-dark-theme evil))))
+    (lsp-mode rust-mode evil-collection avy flycheck company all-the-icons neotree dashboard airline-themes powerline counsel projectile which-key atom-one-dark-theme evil))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
-;; (require 'evil)
+
+(setq evil-want-integration t)
+(setq evil-want-keybinding nil)
+(setq evil-want-C-u-scroll t)
+
+(require 'evil)
+(when (require 'evil-collection nil t)
+  (evil-collection-init))
+(evil-mode 1)
+(evil-set-initial-state 'neotree-mode 'emacs)
+(evil-set-initial-state 'dashboard-mode 'emacs)
+(evil-set-initial-state 'dired-mode 'emacs)
+(evil-set-initial-state 'shell-mode 'emacs)
+
 (require 'powerline)
 (require 'airline-themes)
 (require 'page-break-lines)
@@ -39,5 +52,9 @@ There are two things you can do about this warning:
 (require 'dashboard)
 (require 'neotree)
 (require 'all-the-icons)
+(require 'rust-mode)
+(require 'lsp-mode)
+(add-hook 'c-mode-hook #'lsp)
+(add-hook 'rust-mode-hook #'lsp)
 
 (load "~/.emacs.d/config.el")
