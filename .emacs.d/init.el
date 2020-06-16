@@ -19,12 +19,13 @@ There are two things you can do about this warning:
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(conda-anaconda-home "~/anaconda3/")
  '(custom-safe-themes
    (quote
     ("d1af5ef9b24d25f50f00d455bd51c1d586ede1949c5d2863bef763c60ddf703a" default)))
  '(package-selected-packages
    (quote
-    (lsp-mode rust-mode evil-collection avy flycheck company all-the-icons neotree dashboard airline-themes powerline counsel projectile which-key atom-one-dark-theme evil))))
+    (pyvenv jedi eglot counsel company-lsp magit rust-mode evil-collection avy flycheck company all-the-icons neotree dashboard airline-themes powerline projectile which-key atom-one-dark-theme evil))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -53,8 +54,15 @@ There are two things you can do about this warning:
 (require 'neotree)
 (require 'all-the-icons)
 (require 'rust-mode)
+(require 'company-lsp)
+(push 'company-lsp company-backends)
 (require 'lsp-mode)
 (add-hook 'c-mode-hook #'lsp)
 (add-hook 'rust-mode-hook #'lsp)
+(add-hook 'python-mode-hook 'jedi:setup)
+(setq jedi:complete-on-dot t)
+
+(setenv "WORKON_HOME" "~/anaconda3/envs")
+(pyvenv-mode 1)
 
 (load "~/.emacs.d/config.el")

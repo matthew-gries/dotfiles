@@ -7,6 +7,7 @@
 (projectile-mode +1)
 (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
 (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+(setq projectile-completion-system 'ivy)
 (ivy-mode 1)
 (load-theme 'airline-onedark t)
 (turn-on-page-break-lines-mode)
@@ -15,7 +16,7 @@
 
 (global-set-key [f8] 'neotree-toggle)
 
-(add-hook 'after-init-hook 'global-company-mode)
+;;(add-hook 'after-init-hook 'global-company-mode)
 (add-hook 'after-init-hook #'global-flycheck-mode)
 
 (setq dashboard-banner-logo-title "Uh oh, stinky...")
@@ -27,6 +28,13 @@
 (setq dashboard-startup-banner 3)
 (setq dashboard-center-content t)
 (setq neo-theme (if (display-graphic-p) 'icons 'arrow))
+
+(defun my-c-mode-hook ()
+  (setq c-default-style "linux")
+  (setq c-basic-offset 4))
+
+(add-hook 'c-mode-hook 'my-c-mode-hook)
+(add-hook 'c++-mode-hook 'my-c-mode-hook)
 
 (setq c-default-style "linux")
 (setq c-basic-offset 4)
