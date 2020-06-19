@@ -25,7 +25,7 @@ There are two things you can do about this warning:
     ("d1af5ef9b24d25f50f00d455bd51c1d586ede1949c5d2863bef763c60ddf703a" default)))
  '(package-selected-packages
    (quote
-    (pyvenv jedi eglot counsel company-lsp magit rust-mode evil-collection avy flycheck company all-the-icons neotree dashboard airline-themes powerline projectile which-key atom-one-dark-theme evil))))
+    (flycheck-rust evil-magit pyvenv jedi eglot counsel company-lsp magit rust-mode evil-collection avy flycheck company all-the-icons neotree dashboard airline-themes powerline projectile which-key atom-one-dark-theme evil))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -45,6 +45,11 @@ There are two things you can do about this warning:
 (evil-set-initial-state 'dashboard-mode 'emacs)
 (evil-set-initial-state 'dired-mode 'emacs)
 (evil-set-initial-state 'shell-mode 'emacs)
+
+(setq evil-magit-state 'normal)
+(setq evil-magit-use-y-for-yank nil)
+(require 'evil-magit)
+
 
 (require 'powerline)
 (require 'airline-themes)

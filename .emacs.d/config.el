@@ -13,11 +13,25 @@
 (turn-on-page-break-lines-mode)
 (dashboard-setup-startup-hook)
 (global-display-line-numbers-mode)
+(toggle-truncate-lines)
 
 (global-set-key [f8] 'neotree-toggle)
-
+(add-hook 'neotree-mode-hook
+	    (lambda ()
+	    (define-key evil-normal-state-local-map (kbd "TAB") 'neotree-enter)
+	    (define-key evil-normal-state-local-map (kbd "SPC") 'neotree-quick-look)
+	    (define-key evil-normal-state-local-map (kbd "q") 'neotree-hide)
+	    (define-key evil-normal-state-local-map (kbd "RET") 'neotree-enter)
+	    (define-key evil-normal-state-local-map (kbd "g") 'neotree-refresh)
+	    (define-key evil-normal-state-local-map (kbd "n") 'neotree-next-line)
+	    (define-key evil-normal-state-local-map (kbd "p") 'neotree-previous-line)
+	    (define-key evil-normal-state-local-map (kbd "A") 'neotree-stretch-toggle)
+	    (define-key evil-normal-state-local-map (kbd "H") 'neotree-hidden-file-toggle)))
 ;;(add-hook 'after-init-hook 'global-company-mode)
 (add-hook 'after-init-hook #'global-flycheck-mode)
+
+(with-eval-after-load 'rust-mode
+  (add-hook 'flycheck-mode-hook #'flycheck-rust-setup))
 
 (setq dashboard-banner-logo-title "Uh oh, stinky...")
 (setq dashboard-items '((recents  . 5)
