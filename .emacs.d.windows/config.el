@@ -1,64 +1,59 @@
-(set-frame-font "Iosevka Light 12" nil t)
-(load-theme 'atom-one-dark t)
-(menu-bar-mode 0)
+(set-frame-font "Iosevka 12" nil t)
+(load-theme 'gruvbox t)
 (tool-bar-mode 0)
 (set-scroll-bar-mode nil)
-(which-key-mode)
-(projectile-mode +1)
-(define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
-(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
-(setq projectile-completion-system 'ivy)
-(ivy-mode 1)
-;;(load-theme 'airline-onedark t)
-(turn-on-page-break-lines-mode)
-(dashboard-setup-startup-hook)
 (global-display-line-numbers-mode)
 (toggle-truncate-lines)
+;;(setq inhibit-startup-message t)
+(setq initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
+(add-to-list 'default-frame-alist '(font . "Iosevka 12"))
+(setq-default visible-bell t)
+(setq use-file-dialog nil)
+(setq use-dialog-box nil)
+(setq-default buffer-file-coding-system 'utf-8-unix)
+;; utf-8 settings
+(set-terminal-coding-system 'utf-8)
+(set-language-environment 'utf-8)
+(set-keyboard-coding-system 'utf-8)
+(prefer-coding-system 'utf-8)
+(setq locale-coding-system 'utf-8)
+(set-default-coding-systems 'utf-8)
+(set-terminal-coding-system 'utf-8)
 
-(global-set-key [f8] 'neotree-toggle)
+;; Windows performance tweaks
+;;
+(when (boundp 'w32-pipe-read-delay)
+  (setq w32-pipe-read-delay 0))
+;; Set the buffer size to 64K on Windows (from the original 4K)
+(when (boundp 'w32-pipe-buffer-size)
+  (setq irony-server-w32-pipe-buffer-size (* 64 1024)))
 
-;;(add-hook 'after-init-hook 'global-company-mode)
-(add-hook 'after-init-hook #'global-flycheck-mode)
-(add-hook 'neotree-mode-hook
-	    (lambda ()
-	    (define-key evil-normal-state-local-map (kbd "TAB") 'neotree-enter)
-	    (define-key evil-normal-state-local-map (kbd "SPC") 'neotree-quick-look)
-	    (define-key evil-normal-state-local-map (kbd "q") 'neotree-hide)
-	    (define-key evil-normal-state-local-map (kbd "RET") 'neotree-enter)
-	    (define-key evil-normal-state-local-map (kbd "g") 'neotree-refresh)
-	    (define-key evil-normal-state-local-map (kbd "n") 'neotree-next-line)
-	    (define-key evil-normal-state-local-map (kbd "p") 'neotree-previous-line)
-	    (define-key evil-normal-state-local-map (kbd "A") 'neotree-stretch-toggle)
-	    (define-key evil-normal-state-local-map (kbd "H") 'neotree-hidden-file-toggle)))
+;; compile command set to F9
+(global-set-key (kbd "<f9>") #'compile)
 
-;;(with-eval-after-load 'rust-mode
-;;  (add-hook 'flycheck-mode-hook #'flycheck-rust-setup))
+(global-set-key (kbd "<C-f9>")
+                (lambda () (interactive)
+                  (save-buffer)
+                  (recompile)                
+                  ))
 
-(setq dashboard-banner-logo-title "Uh oh, stinky...")
-(setq dashboard-items '((recents  . 5)
-                        (bookmarks . 5)
-                        (projects . 5)
-                        (agenda . 5)
-                        (registers . 5)))
-(setq dashboard-startup-banner 3)
-(setq dashboard-center-content t)
-(setq neo-theme (if (display-graphic-p) 'icons 'arrow))
 
-(defun my-c-mode-hook ()
-  (setq c-default-style "linux")
-  (setq c-basic-offset 4))
+;; function to run bash
+(defun run-bash ()
+      (interactive)
+      (let ((shell-file-name "C:\\Program Files\\Git\\bin\\bash.exe"))
+            (shell "*bash*")))
 
-(add-hook 'c-mode-hook 'my-c-mode-hook)
-(add-hook 'c++-mode-hook 'my-c-mode-hook)
+;; function to run cmd
+(defun run-cmdexe ()
+      (interactive)
+      (let ((shell-file-name "cmd.exe"))
+            (shell "*cmd.exe*")))
 
-(setq-default indent-tabs-mode nil)
-(setq-default tab-width 4)
-(setq indent-line-function 'insert-tab)
-
-(global-set-key (kbd "C-:") 'avy-goto-char)
-(global-set-key (kbd "C-'") 'avy-goto-char-2)
-(global-set-key (kbd "M-g f") 'avy-goto-line)
-(global-set-key (kbd "M-g w") 'avy-goto-word-1)
-(global-set-key (kbd "M-g e") 'avy-goto-word-0)
-
-(setq w32-pipe-read-delay 0)
+;; function to run powershell
+(defun run-powershell ()
+  "Run powershell"
+  (interactive)
+  (async-shell-command "c:/windows/system32/WindowsPowerShell/v1.0/powershell.exe -Command -"
+               nil
+               nil))
