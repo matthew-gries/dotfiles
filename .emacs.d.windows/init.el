@@ -1,41 +1,32 @@
-(require 'package)
-(let* ((no-ssl (and (memq system-type '(windows-nt ms-dos))
-                    (not (gnutls-available-p))))
-       (proto (if no-ssl "http" "https")))
-  (when no-ssl (warn "\
-Your version of Emacs does not support SSL connections,
-which is unsafe because it allows man-in-the-middle attacks.
-There are two things you can do about this warning:
-1. Install an Emacs version that does support SSL and be safe.
-2. Remove this warning from your init file so you won't see it again."))
-  (add-to-list 'package-archives (cons "melpa" (concat proto "://melpa.org/packages/")) t)
-  ;; Comment/uncomment this line to enable MELPA Stable if desired.  See `package-archive-priorities`
-  ;; and `package-pinned-packages`. Most users will not need or want to do this.
-  ;;(add-to-list 'package-archives (cons "melpa-stable" (concat proto "://stable.melpa.org/packages/")) t)
-  )
+
+;; Added by Package.el.  This must come before configurations of
+;; installed packages.  Don't delete this line.  If you don't want it,
+;; just comment it out by adding a semicolon to the start of the line.
+;; You may delete these explanatory comments.
 (package-initialize)
+
+(require 'package)
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(custom-safe-themes
-   (quote
-    ("d1af5ef9b24d25f50f00d455bd51c1d586ede1949c5d2863bef763c60ddf703a" default)))
  '(package-selected-packages
    (quote
-    (flycheck-rust evil-magit counsel-projectile magit lsp-mode rust-mode evil-collection avy flycheck company all-the-icons neotree dashboard airline-themes powerline counsel projectile which-key atom-one-dark-theme evil))))
+    (counsel-projectile counsel neotree all-the-icons projectile dashboard evil-magit gruvbox-theme evil))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+(which-key-mode)
+(ivy-mode 1)
 
 (setq evil-want-integration t)
 (setq evil-want-keybinding nil)
 (setq evil-want-C-u-scroll t)
-
 (require 'evil)
 (when (require 'evil-collection nil t)
   (evil-collection-init))
@@ -49,26 +40,44 @@ There are two things you can do about this warning:
 (setq evil-magit-use-y-for-yank nil)
 (require 'evil-magit)
 
-(require 'flycheck)
-
-;;(require 'powerline)
-;;(require 'airline-themes)
-(require 'page-break-lines)
-(add-to-list 'load-path "~/.emacs.d/elpa/page-break-lines/page-break-lines-20200305.244.el")
-(require 'dashboard)
-(require 'neotree)
-(require 'all-the-icons)
-(require 'rust-mode)
-(require 'company-lsp)
-(push 'company-lsp company-backends)
-(require 'lsp-mode)
-(add-hook 'c-mode-hook #'lsp)
-(add-hook 'rust-mode-hook #'lsp)
-;;(add-hook 'python-mode-hook 'jedi:setup)
-;;(setq jedi:complete-on-dot t)
-;;(setenv "WORKON_HOME" "~/Anaconda3/envs")
-;;(pyvenv-mode 1)
-
+(projectile-mode +1)
+(define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
+(define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
+(setq projectile-completion-system 'ivy)
 (counsel-projectile-mode)
+
+(require 'all-the-icons)
+(add-to-list 'load-path "~/.emacs.d/elpa/page-break-lines.el")
+
+(require 'page-break-lines)
+(turn-on-page-break-lines-mode)
+
+;; dashboard settings
+(require 'dashboard)
+(dashboard-setup-startup-hook)
+(setq dashboard-banner-logo-title "Uh oh, stinky...")
+(setq dashboard-items '((recents  . 5)
+                        (bookmarks . 5)
+                        (projects . 5)
+                        (agenda . 5)
+                        (registers . 5)))
+(setq dashboard-startup-banner 3)
+(setq dashboard-center-content t)
+(setq neo-theme (if (display-graphic-p) 'icons 'arrow))
+
+;; neotree settings
+(require 'neotree)
+(global-set-key [f8] 'neotree-toggle)
+(add-hook 'neotree-mode-hook
+	    (lambda ()
+	    (define-key evil-normal-state-local-map (kbd "TAB") 'neotree-enter)
+	    (define-key evil-normal-state-local-map (kbd "SPC") 'neotree-quick-look)
+	    (define-key evil-normal-state-local-map (kbd "q") 'neotree-hide)
+	    (define-key evil-normal-state-local-map (kbd "RET") 'neotree-enter)
+	    (define-key evil-normal-state-local-map (kbd "g") 'neotree-refresh)
+	    (define-key evil-normal-state-local-map (kbd "n") 'neotree-next-line)
+	    (define-key evil-normal-state-local-map (kbd "p") 'neotree-previous-line)
+	    (define-key evil-normal-state-local-map (kbd "A") 'neotree-stretch-toggle)
+	    (define-key evil-normal-state-local-map (kbd "H") 'neotree-hidden-file-toggle)))
 
 (load "~/.emacs.d/config.el")
