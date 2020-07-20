@@ -7,6 +7,7 @@
 ;;(setq inhibit-startup-message t)
 (setq initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
 (add-to-list 'default-frame-alist '(font . "Iosevka 12"))
+(add-to-list 'default-frame-alist '(fullscreen . maximized))
 (setq-default visible-bell t)
 (setq use-file-dialog nil)
 (setq use-dialog-box nil)
