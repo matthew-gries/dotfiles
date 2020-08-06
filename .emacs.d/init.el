@@ -25,7 +25,7 @@ There are two things you can do about this warning:
     ("d1af5ef9b24d25f50f00d455bd51c1d586ede1949c5d2863bef763c60ddf703a" default)))
  '(package-selected-packages
    (quote
-    (flycheck-rust evil-magit pyvenv jedi eglot counsel company-lsp magit rust-mode evil-collection avy flycheck company all-the-icons neotree dashboard airline-themes powerline projectile which-key atom-one-dark-theme evil))))
+    (company-irony irony-eldoc irony auctex flycheck-rust evil-magit pyvenv jedi eglot counsel company-lsp magit rust-mode evil-collection avy flycheck company all-the-icons neotree dashboard airline-themes powerline projectile which-key atom-one-dark-theme evil))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -33,6 +33,7 @@ There are two things you can do about this warning:
  ;; If there is more than one, they won't work right.
  )
 
+;; Evil mode
 (setq evil-want-integration t)
 (setq evil-want-keybinding nil)
 (setq evil-want-C-u-scroll t)
@@ -50,22 +51,48 @@ There are two things you can do about this warning:
 (setq evil-magit-use-y-for-yank nil)
 (require 'evil-magit)
 
-
+;; General quality of life extensions
+(which-key-mode)
+(projectile-mode +1)
+(ivy-mode 1)
+(setq projectile-completion-system 'ivy)
 (require 'powerline)
 (require 'airline-themes)
 (require 'page-break-lines)
+(turn-on-page-break-lines-mode)
 (add-to-list 'load-path "~/.emacs.d/elpa/page-break-lines/page-break-lines-20200305.244.el")
 (require 'dashboard)
+(dashboard-setup-startup-hook)
 (require 'neotree)
 (require 'all-the-icons)
-(require 'rust-mode)
+
+;; code completion engine
+(setq company-idle-delay 0)
+(setq company-minimum-prefix-length 3)
+
+(require 'company)
+(setq company-idle-delay 0)
+(setq company-minimum-prefix-length 3)
+(global-company-mode t)
 (require 'company-lsp)
+(setq compnay-lsp-enable-snippet t)
 (push 'company-lsp company-backends)
 (require 'lsp-mode)
-(add-hook 'c-mode-hook #'lsp)
+(require 'rust-mode)
+;;(add-hook 'c-mode-hook #'lsp)
+;;(add-hook 'c++-mode-hook #'lsp)
 (add-hook 'rust-mode-hook #'lsp)
 (add-hook 'python-mode-hook 'jedi:setup)
 (setq jedi:complete-on-dot t)
+					; irony mode
+(require 'company-irony)
+(add-to-list 'company-backends 'company-irony)
+(require 'irony)
+(add-hook 'c++-mode-hook 'irony-mode)
+(add-hook 'c-mode-hook 'irony-mode)
+(add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
+(require 'irony-eldoc)
+(add-hook 'irony-mode-hook #'irony-eldoc)
 
 (setenv "WORKON_HOME" "~/anaconda3/envs")
 (pyvenv-mode 1)
