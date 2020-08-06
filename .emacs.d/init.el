@@ -67,13 +67,14 @@ There are two things you can do about this warning:
 (require 'all-the-icons)
 
 ;; code completion engine
-(setq company-idle-delay 0)
-(setq company-minimum-prefix-length 3)
-
 (require 'company)
-(setq company-idle-delay 0)
+(setq company-idle-delay nil)
 (setq company-minimum-prefix-length 3)
-(global-company-mode t)
+(setq company-show-numbers t)
+(setq company-tooltip-limit 20)
+(setq company-dabbrev-downcase nil)
+(add-hook 'after-init-hook 'global-company-mode)
+;;(global-company-mode t)
 (require 'company-lsp)
 (setq compnay-lsp-enable-snippet t)
 (push 'company-lsp company-backends)
@@ -84,12 +85,19 @@ There are two things you can do about this warning:
 (add-hook 'rust-mode-hook #'lsp)
 (add-hook 'python-mode-hook 'jedi:setup)
 (setq jedi:complete-on-dot t)
-					; irony mode
+
+; irony mode
 (require 'company-irony)
 (add-to-list 'company-backends 'company-irony)
 (require 'irony)
 (add-hook 'c++-mode-hook 'irony-mode)
 (add-hook 'c-mode-hook 'irony-mode)
+(defun my-irony-mode-hook ()
+  (define-key irony-mode-map [remap completion-at-point]
+    'irony-completion-at-point-async)
+  (define-key irony-mode-map [remap complete-symbol]
+    'irony-completion-at-point-async))
+(add-hook 'irony-mode-hook 'my-irony-mode-hook)
 (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
 (require 'irony-eldoc)
 (add-hook 'irony-mode-hook #'irony-eldoc)

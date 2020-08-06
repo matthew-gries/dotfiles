@@ -32,6 +32,25 @@
 (global-set-key (kbd "M-g w") 'avy-goto-word-1)
 (global-set-key (kbd "M-g e") 'avy-goto-word-0)
 
+(global-set-key (kbd "C-;") 'company-complete-common)
+
+(defun my-indent-region (N)
+  (interactive "p")
+  (if (use-region-p)
+      (progn (indent-rigidly (region-beginning) (region-end) (* N 4))
+             (setq deactivate-mark nil))
+    (self-insert-command N)))
+
+(defun my-unindent-region (N)
+  (interactive "p")
+  (if (use-region-p)
+      (progn (indent-rigidly (region-beginning) (region-end) (* N -4))
+             (setq deactivate-mark nil))
+    (self-insert-command N)))
+
+(global-set-key (kbd "C->") 'my-indent-region)
+(global-set-key (kbd "C-<") 'my-unindent-region)
+
 ;; dashboard settings
 (setq dashboard-banner-logo-title "Uh oh, stinky...")
 (setq dashboard-items '((recents  . 5)
