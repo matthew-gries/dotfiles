@@ -1,7 +1,14 @@
 ;; themes, fonts, general editor settings
-(set-frame-font "Source Code Pro 12" nil t)
+; daemon specific stuff
+(if (daemonp)
+    (add-hook 'after-make-frame-functions
+	(lambda (frame)
+	  (select-frame frame)
+	  (load-theme 'gruvbox t)
+	  (set-frame-font "Consolas 12" nil t))))
+(set-frame-font "Consolas 12" nil t)
 (load-theme 'gruvbox t)
-(load-theme 'airline-gruvbox-dark t)
+;;(load-theme 'airline-gruvbox-dark t)
 ;;(menu-bar-mode 0)
 (tool-bar-mode 0)
 (set-scroll-bar-mode nil)
@@ -60,6 +67,9 @@
                         (registers . 5)))
 (setq dashboard-startup-banner 3)
 (setq dashboard-center-content t)
+; daemon specific
+(setq initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
+
 (setq neo-theme (if (display-graphic-p) 'icons 'arrow))
 
 ;; language mode hooks and settings
@@ -73,7 +83,9 @@
 
 (add-hook 'c-mode-hook 'my-c-mode-hook)
 (add-hook 'c++-mode-hook 'my-c-mode-hook)
+(add-hook 'rust-mode-hook
+          (lambda () (setq indent-tabs-mode nil)))
 
-(setq c-default-style "linux")
-(setq c-basic-offset 4)
+(setq-default indent-tabs-mode nil)
+(setq tab-width 4)
 
