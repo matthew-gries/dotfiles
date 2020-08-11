@@ -68,8 +68,8 @@ There are two things you can do about this warning:
 
 (use-package page-break-lines
   :config
-  (page-break-lines-mode)
-  (add-to-list 'load-path "~/.emacs.d/elpa/page-break-lines/page-break-lines-20200305.244.el"))
+  (page-break-lines-mode))
+;;  (add-to-list 'load-path "~/.emacs.d/elpa/page-break-lines/page-break-lines-20200305.244.el"))
 
 (use-package dashboard
   :config
@@ -77,6 +77,10 @@ There are two things you can do about this warning:
 
 (use-package neotree)
 (use-package all-the-icons)
+
+(use-package flycheck
+  :ensure t
+  :init (global-flycheck-mode))
 
 ;; code completion engine
 (use-package company
@@ -100,6 +104,9 @@ There are two things you can do about this warning:
   :init
   (add-hook 'rust-mode-hook #'racer-mode)
   (add-hook 'racer-mode-hook #'eldoc-mode))
+
+(with-eval-after-load 'rust-mode
+  (add-hook 'flycheck-mode-hook #'flycheck-rust-setup))
 
 (add-hook 'python-mode-hook 'jedi:setup)
 (setq jedi:complete-on-dot t)
@@ -179,11 +186,6 @@ There are two things you can do about this warning:
 (setq initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
 
 (setq neo-theme (if (display-graphic-p) 'icons 'arrow))
-
-;; language mode hooks and settings
-(add-hook 'after-init-hook #'global-flycheck-mode)
-;;(with-eval-after-load 'rust-mode
-;;  (add-hook 'flycheck-mode-hook #'flycheck-rust-setup))
 
 (defun my-c-mode-hook ()
   (setq c-default-style "linux")
