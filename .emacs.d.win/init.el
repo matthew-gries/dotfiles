@@ -25,7 +25,7 @@ There are two things you can do about this warning:
     ("d1af5ef9b24d25f50f00d455bd51c1d586ede1949c5d2863bef763c60ddf703a" default)))
  '(package-selected-packages
    (quote
-    (use-package company-irony irony-eldoc irony auctex flycheck-rust evil-magit pyvenv jedi eglot counsel company-lsp magit rust-mode evil-collection avy flycheck company all-the-icons neotree dashboard airline-themes powerline projectile which-key atom-one-dark-theme evil))))
+    (cargo racer yasnippet use-package company-irony irony-eldoc irony auctex flycheck-rust evil-magit pyvenv jedi eglot counsel company-lsp magit rust-mode evil-collection avy flycheck company all-the-icons neotree dashboard airline-themes powerline projectile which-key atom-one-dark-theme evil))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -93,10 +93,14 @@ There are two things you can do about this warning:
   (setq compnay-lsp-enable-snippet t)
   (push 'company-lsp company-backends))
 
-(use-package lsp-mode)
-(use-package rust-mode)
+(add-hook 'racer-mode-hook #'company-mode)
 
-(add-hook 'rust-mode-hook #'lsp)
+(use-package lsp-mode)
+(use-package rust-mode
+  :init
+  (add-hook 'rust-mode-hook #'racer-mode)
+  (add-hook 'racer-mode-hook #'eldoc-mode))
+
 (add-hook 'python-mode-hook 'jedi:setup)
 (setq jedi:complete-on-dot t)
 
