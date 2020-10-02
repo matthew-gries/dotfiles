@@ -21,11 +21,10 @@ There are two things you can do about this warning:
  ;; If there is more than one, they won't work right.
  '(conda-anaconda-home "~/anaconda3/")
  '(custom-safe-themes
-   (quote
-    ("d1af5ef9b24d25f50f00d455bd51c1d586ede1949c5d2863bef763c60ddf703a" default)))
+   '("d1af5ef9b24d25f50f00d455bd51c1d586ede1949c5d2863bef763c60ddf703a" default))
+ '(inhibit-startup-screen t)
  '(package-selected-packages
-   (quote
-    (yasnippet use-package company-irony irony-eldoc irony auctex flycheck-rust evil-magit pyvenv jedi eglot counsel company-lsp magit rust-mode evil-collection avy flycheck company all-the-icons neotree dashboard airline-themes powerline projectile which-key atom-one-dark-theme evil))))
+   '(cargo elpy slime flymake-racket racket-mode flycheck-haskell lsp-haskell haskell-mode yasnippet use-package company-irony irony-eldoc irony auctex flycheck-rust evil-magit pyvenv jedi eglot counsel company-lsp magit rust-mode evil-collection avy flycheck company all-the-icons neotree dashboard airline-themes powerline projectile which-key atom-one-dark-theme evil)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -131,7 +130,10 @@ There are two things you can do about this warning:
 ;; flycheck
 (use-package flycheck
   :hook
-  (after-init . global-flycheck-mode))
+  (after-init . global-flycheck-mode)
+  (haskell-mode . flycheck-haskell-setup)
+  :config
+  (setq flycheck-checker-error-threshold 1500))
 
 ;; code completion engine
 (use-package company
@@ -154,7 +156,19 @@ There are two things you can do about this warning:
 (use-package rust-mode
   :hook
   (rust-mode . lsp)
-  (flycheck-mode . flycheck-rust-setup))
+  (rust-mode . cargo-minor-mode))
+
+(with-eval-after-load 'rust-mode
+  (add-hook 'flycheck-mode-hook #'flycheck-rust-setup))
+
+;; slime
+(setq inferior-lisp-program "sbcl")
+
+(use-package lsp-haskell
+  :hook
+  (haskell-mode . lsp))
+
+(setq lsp-haskell-process-path-hie "hie-wrapper")
 
 (use-package jedi
   :hook
@@ -217,6 +231,7 @@ There are two things you can do about this warning:
 
 (global-set-key (kbd "C->") 'my-indent-region)
 (global-set-key (kbd "C-<") 'my-unindent-region)
+(global-set-key (kbd "<f9>") 'compile)
 
 ;; language mode hooks and settings
 (defun my-c-mode-hook ()
@@ -226,6 +241,14 @@ There are two things you can do about this warning:
 (add-hook 'c-mode-hook 'my-c-mode-hook)
 (add-hook 'c++-mode-hook 'my-c-mode-hook)
 
-(setq c-default-style "linux")
-(setq c-basic-offset 4)
+;; indentation
+(setq-default tab-width 4)
+(setq-default indent-tabs-mode nil)
+(setq-default tab-always-indent t)
 
+;; environment variables
+(setenv "PATH" (concat "/usr/racket/bin/" (getenv "PATH")))
+
+;; misc.
+(setq max-lisp-eval-depth 10000)
+(setq max-specpdl-size 13000)
