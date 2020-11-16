@@ -166,7 +166,9 @@ There are two things you can do about this warning:
   (setq racer-rust-src-path
     (concat (string-trim
             (shell-command-to-string "rustc --print sysroot"))
-            "/lib/rustlib/src/rust/library")))
+            "/lib/rustlib/src/rust/library"))
+  :bind
+  ("<f8>" . racer-describe))
 
 (add-hook 'rust-mode-hook #'racer-mode)
 (add-hook 'racer-mode-hook #'company-mode)
