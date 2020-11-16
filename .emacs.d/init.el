@@ -24,7 +24,7 @@ There are two things you can do about this warning:
    '("d1af5ef9b24d25f50f00d455bd51c1d586ede1949c5d2863bef763c60ddf703a" default))
  '(inhibit-startup-screen t)
  '(package-selected-packages
-   '(use-package jdee cargo elpy slime flymake-racket racket-mode flycheck-haskell lsp-haskell haskell-mode yasnippet company-irony irony-eldoc irony auctex flycheck-rust evil-magit pyvenv jedi eglot counsel company-lsp magit rust-mode evil-collection avy flycheck company all-the-icons neotree dashboard airline-themes powerline projectile which-key atom-one-dark-theme evil)))
+   '(racer yasnippet-snippets elpy company-jedi yapfify py-yapf company-racer use-package jdee cargo slime flymake-racket racket-mode flycheck-haskell lsp-haskell haskell-mode yasnippet company-irony irony-eldoc irony auctex flycheck-rust evil-magit pyvenv jedi eglot counsel company-lsp magit rust-mode evil-collection avy flycheck company all-the-icons neotree dashboard airline-themes powerline projectile which-key atom-one-dark-theme evil)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -42,22 +42,35 @@ There are two things you can do about this warning:
 
 (use-package evil
   :init
-   (setq evil-want-integration t)
-   (setq evil-want-keybinding nil)
-   (setq evil-want-C-u-scroll t)
-   :config
-   (when (require 'evil-collection nil t)
-   (evil-collection-init))
-   (evil-mode 1)
-   (evil-set-initial-state 'neotree-mode 'emacs)
-   (evil-set-initial-state 'dashboard-mode 'emacs)
-   (evil-set-initial-state 'dired-mode 'emacs)
-   (evil-set-initial-state 'shell-mode 'emacs))
+    (setq evil-want-integration t)
+    (setq evil-want-keybinding nil)
+    (setq evil-want-C-u-scroll t)
+    :config
+    (when (require 'evil-collection nil t)
+    (evil-collection-init))
+    (evil-mode 1)
+    (evil-set-initial-state 'neotree-mode 'emacs)
+    (evil-set-initial-state 'dashboard-mode 'emacs)
+    (evil-set-initial-state 'dired-mode 'emacs)
+    (evil-set-initial-state 'shell-mode 'emacs))
 
-(use-package evil-magit
-  :init
-  (setq evil-magit-state 'normal)
-  (setq evil-magit-use-y-for-yank nil))
+ (use-package evil-magit
+   :init
+   (setq evil-magit-state 'normal)
+   (setq evil-magit-use-y-for-yank nil))
+
+(defun neotree-evil-hook ()
+  ;;; Neotree evil settings
+  (define-key evil-normal-state-local-map (kbd "TAB") 'neotree-enter)
+  (define-key evil-normal-state-local-map (kbd "SPC") 'neotree-quick-look)
+  (define-key evil-normal-state-local-map (kbd "q") 'neotree-hide)
+  (define-key evil-normal-state-local-map (kbd "RET") 'neotree-enter)
+  (define-key evil-normal-state-local-map (kbd "g") 'neotree-refresh)
+  (define-key evil-normal-state-local-map (kbd "n") 'neotree-next-line)
+  (define-key evil-normal-state-local-map (kbd "p") 'neotree-previous-line)
+  (define-key evil-normal-state-local-map (kbd "A") 'neotree-stretch-toggle)
+  (define-key evil-normal-state-local-map (kbd "H") 'neotree-hidden-file-toggle))
+
 
 ;; General quality of life extensions
 (use-package which-key
@@ -75,7 +88,7 @@ There are two things you can do about this warning:
   (projectile-mode +1)
   :bind-keymap
   ("C-c p" . projectile-command-map))
-  
+
 (use-package airline-themes)
 (use-package powerline
   :init
@@ -99,25 +112,13 @@ There are two things you can do about this warning:
   (setq dashboard-startup-banner 3)
   (setq dashboard-center-content t))
 
-(defun neotree-evil-hook ()
-  ;;; Neotree evil settings
-  (define-key evil-normal-state-local-map (kbd "TAB") 'neotree-enter)
-  (define-key evil-normal-state-local-map (kbd "SPC") 'neotree-quick-look)
-  (define-key evil-normal-state-local-map (kbd "q") 'neotree-hide)
-  (define-key evil-normal-state-local-map (kbd "RET") 'neotree-enter)
-  (define-key evil-normal-state-local-map (kbd "g") 'neotree-refresh)
-  (define-key evil-normal-state-local-map (kbd "n") 'neotree-next-line)
-  (define-key evil-normal-state-local-map (kbd "p") 'neotree-previous-line)
-  (define-key evil-normal-state-local-map (kbd "A") 'neotree-stretch-toggle)
-  (define-key evil-normal-state-local-map (kbd "H") 'neotree-hidden-file-toggle))
-
 (use-package neotree
   :hook
   (neotree-mode . neotree-evil-hook)
   :bind
   ([f8] . neotree-toggle)
   :config
-(setq neo-theme (if (display-graphic-p) 'icons 'arrow)))
+  (setq neo-theme (if (display-graphic-p) 'icons 'arrow)))
 
 (use-package avy
   :bind
@@ -127,23 +128,27 @@ There are two things you can do about this warning:
   ("M-g w" . avy-goto-word-1)
   ("M-g e" . avy-goto-word-0))
 
-(use-package flycheck :ensure t
-  :hook
-  (after-init . global-flycheck-mode))
-
-(use-package flycheck-rust :ensure t)
-(use-package rust-mode :ensure t
+;; Language settings
+(use-package yasnippet
   :config
-  (setq rust-format-on-save t))
+  (yas-global-mode 1))
 
-(use-package racer :ensure t
-  :config
-  (progn
-    (add-hook 'rust-mode-hook #'racer-mode)
-    (add-hook 'racer-mode-hook #'eldoc-mode)
-    (add-hook 'racer-mode-hook #'company-mode)))
+;; Rust mode stuff
+(use-package rust-mode)
+(add-hook 'rust-mode-hook
+          (lambda () (setq indent-tabs-mode nil)))
 
-(use-package company :ensure t
+
+;; flycheck and linting
+(use-package flycheck
+  :ensure t
+  :init
+  (global-flycheck-mode))
+
+(add-hook 'after-init-hook #'global-flycheck-mode)
+(add-hook 'rust-mode-hook #'flycheck-rust-setup)
+
+(use-package company
   :init
   (add-hook 'after-init-hook 'global-company-mode)
   :config
@@ -151,68 +156,32 @@ There are two things you can do about this warning:
   (setq company-minimum-prefix-length 3)
   (setq company-show-numbers t)
   (setq company-tooltip-limit 20)
-  (add-hook 'racer-mode-hook
-            (lambda ()
-              (setq-local company-tooltip-align-annotations t)))
   :bind
   ("C-;" . company-complete-common))
 
-(use-package company-lsp
-  :config
-  (push 'company-lsp company-backends))
+ 
+(use-package racer
+  :ensure t
+  :init
+  (setq racer-rust-src-path
+    (concat (string-trim
+            (shell-command-to-string "rustc --print sysroot"))
+            "/lib/rustlib/src/rust/library")))
 
-; irony mode
-(use-package irony
-  :hook
-  (c++-mode . irony-mode)
-  (c-mode . irony-mode))
+(add-hook 'rust-mode-hook #'racer-mode)
+(add-hook 'racer-mode-hook #'company-mode)
 
-(defun my-irony-mode-hook ()
-  (define-key irony-mode-map [remap completion-at-point]
-      'irony-completion-at-point-async)
-  (define-key irony-mode-map [remap complete-symbol]
-      'irony-completion-at-point-async))
-
-(add-hook 'irony-mode-hook 'my-irony-mode-hook)
-(add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
-
-(use-package irony-eldoc
-  :hook
-  (irony-mode irony-eldoc))
-
-(use-package company-irony
-  :config
-  (add-to-list 'company-backends 'company-irony))
-
-;; Enable Cargo minor mode allows us to do cargo commands
-;; rust-mode and toml-mode
-(use-package cargo :ensure t
-  :config
-  (progn
-  (add-hook 'rust-mode-hook 'cargo-minor-mode)
-	(add-hook 'toml-mode-hook 'cargo-minor-mode)))
-
-(add-hook 'after-init-hook #'global-flycheck-mode)
-
-;; Flycheck Rust support.
-(add-hook 'flycheck-mode-hook #'flycheck-rust-setup)
-;; Flycheck-End.
-
-;; Racer bin path.
-(setq racer-cmd (concat (getenv "HOME") "/.cargo/bin/racer"))
-
-;; Map TAB key to completions.
-(setq company-tooltip-align-annotations t)
-
-;; Rust-End.
-
-(setenv "WORKON_HOME" "~/anaconda3/envs")
-(pyvenv-mode 1)
+;;(setenv "WORKON_HOME" "~/anaconda3/envs")
+;;(pyvenv-mode 1)
+(use-package elpy
+  :ensure t
+  :init
+  (elpy-enable))
 
 ;; themes, fonts, general editor settings
 (set-frame-font "Source Code Pro 12" nil t)
 (load-theme 'gruvbox t)
-;;(menu-bar-mode 0)
+(menu-bar-mode 0)
 (tool-bar-mode 0)
 (set-scroll-bar-mode nil)
 (toggle-truncate-lines)
@@ -252,9 +221,6 @@ There are two things you can do about this warning:
 (setq-default tab-width 4)
 (setq-default indent-tabs-mode nil)
 (setq-default tab-always-indent t)
-
-;; environment variables
-(setenv "PATH" (concat "/usr/racket/bin/" (getenv "PATH")))
 
 ;; misc.
 (setq max-lisp-eval-depth 10000)
