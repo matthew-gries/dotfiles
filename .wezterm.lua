@@ -26,6 +26,18 @@ config.keys = {
     mods = 'LEADER|CTRL',
     action = wezterm.action.SendKey { key = 'b', mods = 'CTRL' },
   },
+
+  -- Pane splitting (tmux standard + convenient alternatives)
+  {
+    key = '"',
+    mods = 'LEADER|SHIFT',
+    action = wezterm.action.SplitVertical { domain = 'CurrentPaneDomain' },
+  },
+  {
+    key = '%',
+    mods = 'LEADER|SHIFT',
+    action = wezterm.action.SplitHorizontal { domain = 'CurrentPaneDomain' },
+  },
   {
     key = '-',
     mods = 'LEADER',
@@ -36,6 +48,8 @@ config.keys = {
     mods = 'LEADER',
     action = wezterm.action.SplitHorizontal { domain = 'CurrentPaneDomain' },
   },
+
+  -- Pane management
   {
     key = 's',
     mods = 'LEADER',
@@ -47,9 +61,99 @@ config.keys = {
     action = wezterm.action.TogglePaneZoomState,
   },
   {
+    key = '{',
+    mods = 'LEADER|SHIFT',
+    action = wezterm.action.RotatePanes 'CounterClockwise',
+  },
+  {
+    key = '}',
+    mods = 'LEADER|SHIFT',
+    action = wezterm.action.RotatePanes 'Clockwise',
+  },
+  {
+    key = 'o',
+    mods = 'LEADER',
+    action = wezterm.action.ActivatePaneDirection 'Next',
+  },
+  {
+    key = ';',
+    mods = 'LEADER',
+    action = wezterm.action.ActivatePaneDirection 'Prev',
+  },
+  {
+    key = '!',
+    mods = 'LEADER|SHIFT',
+    action = wezterm.action.SpawnTab 'CurrentPaneDomain',
+  },
+  {
+    key = '.',
+    mods = 'LEADER',
+    action = wezterm.action.MoveTabRelative(1),
+  },
+
+  -- Window/Tab management
+  {
     key = 'c',
     mods = 'LEADER',
     action = wezterm.action.SpawnTab 'CurrentPaneDomain',
+  },
+  {
+    key = 'n',
+    mods = 'LEADER',
+    action = wezterm.action.ActivateTabRelative(1),
+  },
+  {
+    key = 'p',
+    mods = 'LEADER',
+    action = wezterm.action.ActivateTabRelative(-1),
+  },
+  {
+    key = 'Tab',
+    mods = 'LEADER',
+    action = wezterm.action.ActivateLastTab,
+  },
+  {
+    key = 'w',
+    mods = 'LEADER',
+    action = wezterm.action.ShowTabNavigator,
+  },
+  {
+    key = ',',
+    mods = 'LEADER',
+    action = wezterm.action.PromptInputLine {
+      description = 'Enter new name for tab',
+      action = wezterm.action_callback(function(window, pane, line)
+        if line then
+          window:active_tab():set_title(line)
+        end
+      end),
+    },
+  },
+  {
+    key = '&',
+    mods = 'LEADER|SHIFT',
+    action = wezterm.action.CloseCurrentTab { confirm = true },
+  },
+  {
+    key = '<',
+    mods = 'LEADER|SHIFT',
+    action = wezterm.action.MoveTabRelative(-1),
+  },
+  {
+    key = '>',
+    mods = 'LEADER|SHIFT',
+    action = wezterm.action.MoveTabRelative(1),
+  },
+  -- Move tabs with Ctrl+h/l (keep hands on home row)
+  {
+    key = 'h',
+    mods = 'LEADER|CTRL',
+    action = wezterm.action.MoveTabRelative(-1),
+  },
+  {
+    key = 'l',
+    mods = 'LEADER|CTRL',
+    action = wezterm.action.MoveTabRelative(1),
   },
   {
     key = 'h',
@@ -153,6 +257,40 @@ config.keys = {
       name = 'close_pane',
       one_shot = true,
     },
+  },
+
+  -- Copy mode and text selection
+  {
+    key = '[',
+    mods = 'LEADER',
+    action = wezterm.action.ActivateCopyMode,
+  },
+  {
+    key = ' ',
+    mods = 'LEADER',
+    action = wezterm.action.QuickSelect,
+  },
+  {
+    key = '/',
+    mods = 'LEADER',
+    action = wezterm.action.Search { CaseInSensitiveString = '' },
+  },
+  {
+    key = 'd',
+    mods = 'LEADER',
+    action = wezterm.action.ShowLauncher,
+  },
+
+  -- Word navigation with Alt+arrows
+  {
+    key = 'LeftArrow',
+    mods = 'ALT',
+    action = wezterm.action.SendKey { key = 'b', mods = 'ALT' },
+  },
+  {
+    key = 'RightArrow',
+    mods = 'ALT',
+    action = wezterm.action.SendKey { key = 'f', mods = 'ALT' },
   },
 }
 
