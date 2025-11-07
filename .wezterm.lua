@@ -16,6 +16,10 @@ config.color_scheme = "Gruvbox dark, hard (base16)"
 config.font = wezterm.font("3270 Nerd Font")
 
 -- Leader key configuration
+local leader_mod = "CTRL"
+if wezterm.target_triple:find("darwin") then
+  leader_mod = "CMD"
+end
 config.leader = { key = 'b', mods = 'CTRL', timeout_milliseconds = 1000 }
 
 -- Key mappings
