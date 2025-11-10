@@ -79,6 +79,9 @@ return {
           border = 'curved',
           winblend = 3,
         },
+        on_open = function(term)
+          vim.keymap.set('t', '<esc>', [[<C-\><C-n>]], { buffer = term.bufnr, desc = 'Exit terminal mode' })	
+        end,
       }
 
       -- Custom terminal functions
