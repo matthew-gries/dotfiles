@@ -50,4 +50,40 @@ return {
       },
     },
   },
+
+  -- Highlight and navigate TODO comments
+  -- Highlights TODO, FIXME, HACK, NOTE, etc. in your code
+  -- https://github.com/folke/todo-comments.nvim
+  {
+    'folke/todo-comments.nvim',
+    event = 'VimEnter',
+    dependencies = { 'nvim-lua/plenary.nvim' },
+    opts = {
+      signs = true, -- Show icons in the gutter
+      keywords = {
+        FIX = { icon = ' ', color = 'error', alt = { 'FIXME', 'BUG', 'FIXIT', 'ISSUE' } },
+        TODO = { icon = ' ', color = 'info' },
+        HACK = { icon = ' ', color = 'warning' },
+        WARN = { icon = ' ', color = 'warning', alt = { 'WARNING', 'XXX' } },
+        PERF = { icon = ' ', alt = { 'OPTIM', 'PERFORMANCE', 'OPTIMIZE' } },
+        NOTE = { icon = ' ', color = 'hint', alt = { 'INFO' } },
+        TEST = { icon = '⏲ ', color = 'test', alt = { 'TESTING', 'PASSED', 'FAILED' } },
+      },
+    },
+    config = function(_, opts)
+      require('todo-comments').setup(opts)
+
+      -- Keymaps for navigating todos
+      vim.keymap.set('n', ']t', function()
+        require('todo-comments').jump_next()
+      end, { desc = 'Next [T]odo comment' })
+
+      vim.keymap.set('n', '[t', function()
+        require('todo-comments').jump_prev()
+      end, { desc = 'Previous [T]odo comment' })
+
+      -- Search todos with Telescope
+      vim.keymap.set('n', '<leader>st', '<cmd>TodoTelescope<cr>', { desc = '[S]earch [T]odos' })
+    end,
+  },
 }

@@ -12,6 +12,19 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   end,
 })
 
+-- Set 2-space indentation for JavaScript/TypeScript files
+vim.api.nvim_create_autocmd('FileType', {
+  desc = 'Use 2-space indentation for JS/TS files',
+  group = vim.api.nvim_create_augroup('js-ts-indent', { clear = true }),
+  pattern = { 'javascript', 'typescript', 'javascriptreact', 'typescriptreact' },
+  callback = function()
+    vim.opt_local.tabstop = 2
+    vim.opt_local.softtabstop = 2
+    vim.opt_local.shiftwidth = 2
+    vim.opt_local.expandtab = true
+  end,
+})
+
 -- Customize colorcolumn per filetype
 -- Commented out to disable colorcolumn
 -- vim.api.nvim_create_autocmd('FileType', {
