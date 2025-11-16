@@ -1,0 +1,627 @@
+{
+    // ==========================================================================
+    // Workbench & UI
+    // ==========================================================================
+    "workbench.colorTheme": "Gruvbox Material Dark",
+    "workbench.editor.enablePreview": false,
+    "workbench.editor.showTabs": "multiple",
+    "window.restoreWindows": "all",
+    // ==========================================================================
+    // Editor - General
+    // ==========================================================================
+    "editor.lineNumbers": "on",
+    "editor.cursorSurroundingLines": 10, // Matches neovim scrolloff
+    "editor.cursorBlinking": "solid",
+    "editor.minimap.enabled": false,
+    "editor.renderWhitespace": "trailing",
+    "editor.suggestSelection": "first",
+    "editor.bracketPairColorization.enabled": true,
+    "editor.guides.bracketPairs": "active",
+    // Font
+    "editor.fontFamily": "'GohuFont 14 Nerd Font', Menlo, Monaco, 'Courier New', monospace",
+    "editor.fontSize": 14,
+    "editor.fontLigatures": true,
+    // Indentation (default: 4 spaces, matches neovim)
+    "editor.tabSize": 4,
+    "editor.insertSpaces": true,
+    "editor.detectIndentation": false,
+    // ==========================================================================
+    // Editor - Language-Specific Formatting
+    // ==========================================================================
+    "[css]": {
+        "editor.defaultFormatter": "aeschli.vscode-css-formatter"
+    },
+    "[html]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[javascript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.tabSize": 2
+    },
+    "[json]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.tabSize": 2
+    },
+    "[typescript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.tabSize": 2
+    },
+    "[typescriptreact]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.tabSize": 2
+    },
+    // ==========================================================================
+    // VSCodeVim Configuration
+    // ==========================================================================
+    // Leader key (matches neovim)
+    "vim.leader": "<space>",
+    "vim.timeout": 1000,
+    // Core vim features
+    "vim.useSystemClipboard": true,
+    "vim.useCtrlKeys": true,
+    "vim.hlsearch": true,
+    "vim.incsearch": true,
+    "vim.ignorecase": true,
+    "vim.smartcase": true,
+    // Visual feedback
+    "vim.highlightedyank.enable": true,
+    "vim.highlightedyank.duration": 200,
+    // Enable plugins (replaces neovim plugins)
+    "vim.surround": true, // Replaces mini.surround
+    "vim.easymotion": true, // Replaces leap.nvim
+    "vim.sneak": true, // Two-character search
+    "vim.sneakUseIgnorecaseAndSmartcase": true,
+    // EasyMotion colors (Gruvbox theme)
+    "vim.easymotionMarkerBackgroundColor": "#1d2021",
+    "vim.easymotionMarkerForegroundColorOneChar": "#fb4934",
+    "vim.easymotionMarkerForegroundColorTwoCharFirst": "#fe8019",
+    "vim.easymotionMarkerForegroundColorTwoCharSecond": "#fabd2f",
+    // Let VSCode handle these
+    "vim.handleKeys": {
+        "<C-a>": false, // Select all
+        "<C-f>": false, // Find
+        "<C-c>": false // Copy (visual mode)
+    },
+    // ==========================================================================
+    // Normal Mode Keybindings
+    // ==========================================================================
+    "vim.normalModeKeyBindingsNonRecursive": [
+        // Show Which Key menu when Space is pressed
+        {
+            "before": [
+                "<Space>",
+                "<Space>",
+                "<Space>"
+            ],
+            "commands": [
+                "whichkey.show"
+            ]
+        },
+        // Clear search highlights (matches neovim)
+        {
+            "before": [
+                "<Esc>"
+            ],
+            "commands": [
+                ":nohl"
+            ]
+        },
+        // ========================================================================
+        // Editor Group Navigation (Ctrl+hjkl - matches neovim)
+        // ========================================================================
+        {
+            "before": [
+                "<C-h>"
+            ],
+            "commands": [
+                "workbench.action.focusLeftGroup"
+            ]
+        },
+        {
+            "before": [
+                "<C-l>"
+            ],
+            "commands": [
+                "workbench.action.focusRightGroup"
+            ]
+        },
+        {
+            "before": [
+                "<C-j>"
+            ],
+            "commands": [
+                "workbench.action.focusBelowGroup"
+            ]
+        },
+        {
+            "before": [
+                "<C-k>"
+            ],
+            "commands": [
+                "workbench.action.focusAboveGroup"
+            ]
+        },
+        // ========================================================================
+        // Sidebar Navigation (IDE features)
+        // ========================================================================
+        {
+            "before": [
+                "<leader>",
+                "e"
+            ],
+            "commands": [
+                "workbench.view.explorer"
+            ]
+        },
+        {
+            "before": [
+                "<leader>",
+                "f"
+            ],
+            "commands": [
+                "workbench.action.findInFiles"
+            ]
+        },
+        {
+            "before": [
+                "<leader>",
+                "g"
+            ],
+            "commands": [
+                "workbench.view.scm"
+            ]
+        },
+        {
+            "before": [
+                "<leader>",
+                "t"
+            ],
+            "commands": [
+                "workbench.view.extensions"
+            ]
+        },
+        {
+            "before": [
+                "<leader>",
+                "b"
+            ],
+            "commands": [
+                "workbench.action.toggleSidebarVisibility"
+            ]
+        },
+        // ========================================================================
+        // Terminal
+        // ========================================================================
+        {
+            "before": [
+                "<leader>",
+                "`"
+            ],
+            "commands": [
+                "workbench.action.terminal.toggleTerminal"
+            ]
+        },
+        // ========================================================================
+        // Command Palette & Quick Open
+        // ========================================================================
+        {
+            "before": [
+                "<leader>",
+                ":"
+            ],
+            "commands": [
+                "workbench.action.showCommands"
+            ]
+        },
+        {
+            "before": [
+                "<leader>",
+                "o"
+            ],
+            "commands": [
+                "workbench.action.quickOpen"
+            ]
+        },
+        // ========================================================================
+        // Tab/Editor Management
+        // ========================================================================
+        {
+            "before": [
+                "<leader>",
+                "w"
+            ],
+            "commands": [
+                "workbench.action.closeActiveEditor"
+            ]
+        },
+        {
+            "before": [
+                "<leader>",
+                "c"
+            ],
+            "commands": [
+                "workbench.action.files.newUntitledFile"
+            ]
+        },
+        {
+            "before": [
+                "<leader>",
+                "n"
+            ],
+            "commands": [
+                "workbench.action.nextEditor"
+            ]
+        },
+        {
+            "before": [
+                "<leader>",
+                "p"
+            ],
+            "commands": [
+                "workbench.action.previousEditor"
+            ]
+        },
+        // Jump to specific editor (1-9)
+        {
+            "before": [
+                "<leader>",
+                "1"
+            ],
+            "commands": [
+                "workbench.action.openEditorAtIndex1"
+            ]
+        },
+        {
+            "before": [
+                "<leader>",
+                "2"
+            ],
+            "commands": [
+                "workbench.action.openEditorAtIndex2"
+            ]
+        },
+        {
+            "before": [
+                "<leader>",
+                "3"
+            ],
+            "commands": [
+                "workbench.action.openEditorAtIndex3"
+            ]
+        },
+        {
+            "before": [
+                "<leader>",
+                "4"
+            ],
+            "commands": [
+                "workbench.action.openEditorAtIndex4"
+            ]
+        },
+        {
+            "before": [
+                "<leader>",
+                "5"
+            ],
+            "commands": [
+                "workbench.action.openEditorAtIndex5"
+            ]
+        },
+        {
+            "before": [
+                "<leader>",
+                "6"
+            ],
+            "commands": [
+                "workbench.action.openEditorAtIndex6"
+            ]
+        },
+        {
+            "before": [
+                "<leader>",
+                "7"
+            ],
+            "commands": [
+                "workbench.action.openEditorAtIndex7"
+            ]
+        },
+        {
+            "before": [
+                "<leader>",
+                "8"
+            ],
+            "commands": [
+                "workbench.action.openEditorAtIndex8"
+            ]
+        },
+        {
+            "before": [
+                "<leader>",
+                "9"
+            ],
+            "commands": [
+                "workbench.action.openEditorAtIndex9"
+            ]
+        },
+        // ========================================================================
+        // Split Management
+        // ========================================================================
+        {
+            "before": [
+                "<leader>",
+                "s"
+            ],
+            "commands": [
+                "workbench.action.splitEditorDown"
+            ]
+        },
+        {
+            "before": [
+                "<leader>",
+                "v"
+            ],
+            "commands": [
+                "workbench.action.splitEditorRight"
+            ]
+        },
+        {
+            "before": [
+                "<leader>",
+                "="
+            ],
+            "commands": [
+                "workbench.action.evenEditorWidths"
+            ]
+        }
+    ],
+    // ==========================================================================
+    // Visual Mode Keybindings
+    // ==========================================================================
+    "vim.visualModeKeyBindingsNonRecursive": [
+        {
+            "before": [
+                ">"
+            ],
+            "commands": [
+                "editor.action.indentLines"
+            ]
+        },
+        {
+            "before": [
+                "<"
+            ],
+            "commands": [
+                "editor.action.outdentLines"
+            ]
+        }
+    ],
+    // ==========================================================================
+    // Search & Navigation
+    // ==========================================================================
+    "search.smartCase": true,
+    "diffEditor.ignoreTrimWhitespace": false,
+    // ==========================================================================
+    // Files & Workspace
+    // ==========================================================================
+    "files.insertFinalNewline": true,
+    "files.trimTrailingWhitespace": true,
+    "files.exclude": {
+        "**/.classpath": true,
+        "**/.project": true,
+        "**/.settings": true,
+        "**/.factorypath": true
+    },
+    "security.workspace.trust.untrustedFiles": "open",
+    // ==========================================================================
+    // Terminal
+    // ==========================================================================
+    "terminal.integrated.fontSize": 14,
+    "terminal.integrated.fontFamily": "'GohuFont 14 Nerd Font'",
+    "terminal.integrated.inheritEnv": false,
+    // ==========================================================================
+    // Extension-Specific Settings
+    // ==========================================================================
+    // Which Key (shows leader key menu)
+    "whichkey.sortOrder": "alphabetically",
+    "whichkey.delay": 0,
+    "whichkey.showIcons": true,
+    "whichkey.bindings": [
+        {
+            "key": ":",
+            "name": "Command Palette",
+            "type": "command",
+            "command": "workbench.action.showCommands"
+        },
+        {
+            "key": "e",
+            "name": "Explorer",
+            "type": "command",
+            "command": "workbench.view.explorer"
+        },
+        {
+            "key": "f",
+            "name": "Find in Files",
+            "type": "command",
+            "command": "workbench.action.findInFiles"
+        },
+        {
+            "key": "g",
+            "name": "Git (Source Control)",
+            "type": "command",
+            "command": "workbench.view.scm"
+        },
+        {
+            "key": "t",
+            "name": "Extensions",
+            "type": "command",
+            "command": "workbench.view.extensions"
+        },
+        {
+            "key": "b",
+            "name": "Toggle Sidebar",
+            "type": "command",
+            "command": "workbench.action.toggleSidebarVisibility"
+        },
+        {
+            "key": "`",
+            "name": "Toggle Terminal",
+            "type": "command",
+            "command": "workbench.action.terminal.toggleTerminal"
+        },
+        {
+            "key": "o",
+            "name": "Quick Open",
+            "type": "command",
+            "command": "workbench.action.quickOpen"
+        },
+        {
+            "key": "w",
+            "name": "Close Editor",
+            "type": "command",
+            "command": "workbench.action.closeActiveEditor"
+        },
+        {
+            "key": "c",
+            "name": "New File",
+            "type": "command",
+            "command": "workbench.action.files.newUntitledFile"
+        },
+        {
+            "key": "n",
+            "name": "Next Editor",
+            "type": "command",
+            "command": "workbench.action.nextEditor"
+        },
+        {
+            "key": "p",
+            "name": "Previous Editor",
+            "type": "command",
+            "command": "workbench.action.previousEditor"
+        },
+        {
+            "key": "1",
+            "name": "Editor 1",
+            "type": "command",
+            "command": "workbench.action.openEditorAtIndex1"
+        },
+        {
+            "key": "2",
+            "name": "Editor 2",
+            "type": "command",
+            "command": "workbench.action.openEditorAtIndex2"
+        },
+        {
+            "key": "3",
+            "name": "Editor 3",
+            "type": "command",
+            "command": "workbench.action.openEditorAtIndex3"
+        },
+        {
+            "key": "4",
+            "name": "Editor 4",
+            "type": "command",
+            "command": "workbench.action.openEditorAtIndex4"
+        },
+        {
+            "key": "5",
+            "name": "Editor 5",
+            "type": "command",
+            "command": "workbench.action.openEditorAtIndex5"
+        },
+        {
+            "key": "6",
+            "name": "Editor 6",
+            "type": "command",
+            "command": "workbench.action.openEditorAtIndex6"
+        },
+        {
+            "key": "7",
+            "name": "Editor 7",
+            "type": "command",
+            "command": "workbench.action.openEditorAtIndex7"
+        },
+        {
+            "key": "8",
+            "name": "Editor 8",
+            "type": "command",
+            "command": "workbench.action.openEditorAtIndex8"
+        },
+        {
+            "key": "9",
+            "name": "Editor 9",
+            "type": "command",
+            "command": "workbench.action.openEditorAtIndex9"
+        },
+        {
+            "key": "s",
+            "name": "Split Down",
+            "type": "command",
+            "command": "workbench.action.splitEditorDown"
+        },
+        {
+            "key": "v",
+            "name": "Split Right",
+            "type": "command",
+            "command": "workbench.action.splitEditorRight"
+        },
+        {
+            "key": "=",
+            "name": "Balance Editor Sizes",
+            "type": "command",
+            "command": "workbench.action.evenEditorWidths"
+        },
+        {
+            "key": " ",
+            "name": "EasyMotion...",
+            "type": "bindings",
+            "bindings": [
+                {
+                    "key": "w",
+                    "name": "Jump to Word",
+                    "type": "command",
+                    "command": "extension.vim_easymotion.w"
+                },
+                {
+                    "key": "b",
+                    "name": "Jump to Word (backward)",
+                    "type": "command",
+                    "command": "extension.vim_easymotion.b"
+                },
+                {
+                    "key": "s",
+                    "name": "Search 2-char",
+                    "type": "command",
+                    "command": "extension.vim_easymotion.s2"
+                },
+                {
+                    "key": "j",
+                    "name": "Jump to Line (below)",
+                    "type": "command",
+                    "command": "extension.vim_easymotion.j"
+                },
+                {
+                    "key": "k",
+                    "name": "Jump to Line (above)",
+                    "type": "command",
+                    "command": "extension.vim_easymotion.k"
+                }
+            ]
+        }
+    ],
+    // Python
+    "python.defaultInterpreterPath": "/opt/anaconda3/envs/cs4910/bin/python",
+    // TypeScript/JavaScript
+    "typescript.updateImportsOnFileMove.enabled": "always",
+    "javascript.updateImportsOnFileMove.enabled": "always",
+    // CMake
+    "cmake.configureOnOpen": true,
+    // Red Hat (disable telemetry)
+    "redhat.telemetry.enabled": false,
+    // Claude Code
+    "claudeCode.useTerminal": true,
+    // GitHub Copilot Chat
+    "chat.agent.enabled": false,
+    "[jsonc]": {
+        "editor.defaultFormatter": "vscode.json-language-features"
+    }
+}
