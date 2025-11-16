@@ -1,0 +1,91 @@
+[
+    {
+        "key": "shift+enter",
+        "command": "workbench.action.terminal.sendSequence",
+        "args": {
+            "text": "\\\r\n"
+        },
+        "when": "terminalFocus"
+    },
+    // ========================================================================
+    // File Explorer Navigation (vim-style when sidebar focused)
+    // ========================================================================
+    {
+        "key": "h",
+        "command": "list.collapse",
+        "when": "explorerViewletVisible && filesExplorerFocus && !inputFocus"
+    },
+    {
+        "key": "l",
+        "command": "list.expand",
+        "when": "explorerViewletVisible && filesExplorerFocus && !inputFocus"
+    },
+    {
+        "key": "j",
+        "command": "list.focusDown",
+        "when": "explorerViewletVisible && filesExplorerFocus && !inputFocus"
+    },
+    {
+        "key": "k",
+        "command": "list.focusUp",
+        "when": "explorerViewletVisible && filesExplorerFocus && !inputFocus"
+    },
+    // ========================================================================
+    // Return to Editor (Escape from sidebars)
+    // ========================================================================
+    {
+        "key": "escape",
+        "command": "workbench.action.focusActiveEditorGroup",
+        "when": "sideBarFocus && !inputFocus"
+    },
+    {
+        "key": "escape",
+        "command": "workbench.action.focusActiveEditorGroup",
+        "when": "searchViewletFocus && !inputFocus"
+    },
+    {
+        "key": "escape",
+        "command": "workbench.action.focusActiveEditorGroup",
+        "when": "extensionsFocus && !inputFocus"
+    },
+    // ========================================================================
+    // Terminal Toggle (Ctrl+` to switch between terminal and editor)
+    // ========================================================================
+    {
+        "key": "ctrl+`",
+        "command": "workbench.action.terminal.focus",
+        "when": "!terminalFocus"
+    },
+    {
+        "key": "ctrl+`",
+        "command": "workbench.action.focusActiveEditorGroup",
+        "when": "terminalFocus"
+    },
+    // ========================================================================
+    // Panel Management (bottom pane with terminal/output/problems)
+    // ========================================================================
+    {
+        "key": "cmd+j",
+        "command": "workbench.action.togglePanel"
+    },
+    // ========================================================================
+    // Quick Editor Closing (works everywhere)
+    // ========================================================================
+    {
+        "key": "cmd+w",
+        "command": "workbench.action.closeActiveEditor"
+    },
+    // ========================================================================
+    // Disable conflicting default keybindings
+    // ========================================================================
+    {
+        "key": "ctrl+h",
+        "command": "-editor.action.startFindReplaceAction",
+        "when": "editorFocus || editorIsOpen"
+    },
+    {
+        "key": "ctrl+k",
+        "command": "-workbench.action.terminal.clear",
+        "when": "terminalFocus"
+    }
+]
