@@ -76,301 +76,27 @@
     "vim.easymotionMarkerForegroundColorOneChar": "#fb4934",
     "vim.easymotionMarkerForegroundColorTwoCharFirst": "#fe8019",
     "vim.easymotionMarkerForegroundColorTwoCharSecond": "#fabd2f",
-    // Let VSCode handle these
+    // Let VSCode handle these (workspace commands handled by keybindings.json)
     "vim.handleKeys": {
         "<C-a>": false, // Select all
         "<C-f>": false, // Find
-        "<C-c>": false // Copy (visual mode)
+        "<C-c>": false, // Copy (visual mode)
+        "<C-h>": false, // Navigate left (global keybinding)
+        "<C-j>": false, // Navigate down (global keybinding)
+        "<C-k>": false, // Navigate up (global keybinding)
+        "<C-l>": false  // Navigate right (global keybinding)
     },
     // ==========================================================================
-    // Normal Mode Keybindings
+    // Normal Mode Keybindings (vim-specific only)
     // ==========================================================================
     "vim.normalModeKeyBindingsNonRecursive": [
-        // Show Which Key menu when Space is pressed
-        {
-            "before": [
-                "<Space>",
-                "<Space>",
-                "<Space>"
-            ],
-            "commands": [
-                "whichkey.show"
-            ]
-        },
-        // Clear search highlights (matches neovim)
+        // Clear search highlights (vim-specific command)
         {
             "before": [
                 "<Esc>"
             ],
             "commands": [
                 ":nohl"
-            ]
-        },
-        // ========================================================================
-        // Editor Group Navigation (Ctrl+hjkl - matches neovim)
-        // ========================================================================
-        {
-            "before": [
-                "<C-h>"
-            ],
-            "commands": [
-                "workbench.action.focusLeftGroup"
-            ]
-        },
-        {
-            "before": [
-                "<C-l>"
-            ],
-            "commands": [
-                "workbench.action.focusRightGroup"
-            ]
-        },
-        {
-            "before": [
-                "<C-j>"
-            ],
-            "commands": [
-                "workbench.action.focusBelowGroup"
-            ]
-        },
-        {
-            "before": [
-                "<C-k>"
-            ],
-            "commands": [
-                "workbench.action.focusAboveGroup"
-            ]
-        },
-        // ========================================================================
-        // Sidebar Navigation (IDE features)
-        // ========================================================================
-        {
-            "before": [
-                "<leader>",
-                "e"
-            ],
-            "commands": [
-                "workbench.view.explorer"
-            ]
-        },
-        {
-            "before": [
-                "<leader>",
-                "f"
-            ],
-            "commands": [
-                "workbench.action.findInFiles"
-            ]
-        },
-        {
-            "before": [
-                "<leader>",
-                "g"
-            ],
-            "commands": [
-                "workbench.view.scm"
-            ]
-        },
-        {
-            "before": [
-                "<leader>",
-                "t"
-            ],
-            "commands": [
-                "workbench.view.extensions"
-            ]
-        },
-        {
-            "before": [
-                "<leader>",
-                "b"
-            ],
-            "commands": [
-                "workbench.action.toggleSidebarVisibility"
-            ]
-        },
-        // ========================================================================
-        // Terminal
-        // ========================================================================
-        {
-            "before": [
-                "<leader>",
-                "`"
-            ],
-            "commands": [
-                "workbench.action.terminal.toggleTerminal"
-            ]
-        },
-        // ========================================================================
-        // Command Palette & Quick Open
-        // ========================================================================
-        {
-            "before": [
-                "<leader>",
-                ":"
-            ],
-            "commands": [
-                "workbench.action.showCommands"
-            ]
-        },
-        {
-            "before": [
-                "<leader>",
-                "o"
-            ],
-            "commands": [
-                "workbench.action.quickOpen"
-            ]
-        },
-        // ========================================================================
-        // Tab/Editor Management
-        // ========================================================================
-        {
-            "before": [
-                "<leader>",
-                "w"
-            ],
-            "commands": [
-                "workbench.action.closeActiveEditor"
-            ]
-        },
-        {
-            "before": [
-                "<leader>",
-                "c"
-            ],
-            "commands": [
-                "workbench.action.files.newUntitledFile"
-            ]
-        },
-        {
-            "before": [
-                "<leader>",
-                "n"
-            ],
-            "commands": [
-                "workbench.action.nextEditor"
-            ]
-        },
-        {
-            "before": [
-                "<leader>",
-                "p"
-            ],
-            "commands": [
-                "workbench.action.previousEditor"
-            ]
-        },
-        // Jump to specific editor (1-9)
-        {
-            "before": [
-                "<leader>",
-                "1"
-            ],
-            "commands": [
-                "workbench.action.openEditorAtIndex1"
-            ]
-        },
-        {
-            "before": [
-                "<leader>",
-                "2"
-            ],
-            "commands": [
-                "workbench.action.openEditorAtIndex2"
-            ]
-        },
-        {
-            "before": [
-                "<leader>",
-                "3"
-            ],
-            "commands": [
-                "workbench.action.openEditorAtIndex3"
-            ]
-        },
-        {
-            "before": [
-                "<leader>",
-                "4"
-            ],
-            "commands": [
-                "workbench.action.openEditorAtIndex4"
-            ]
-        },
-        {
-            "before": [
-                "<leader>",
-                "5"
-            ],
-            "commands": [
-                "workbench.action.openEditorAtIndex5"
-            ]
-        },
-        {
-            "before": [
-                "<leader>",
-                "6"
-            ],
-            "commands": [
-                "workbench.action.openEditorAtIndex6"
-            ]
-        },
-        {
-            "before": [
-                "<leader>",
-                "7"
-            ],
-            "commands": [
-                "workbench.action.openEditorAtIndex7"
-            ]
-        },
-        {
-            "before": [
-                "<leader>",
-                "8"
-            ],
-            "commands": [
-                "workbench.action.openEditorAtIndex8"
-            ]
-        },
-        {
-            "before": [
-                "<leader>",
-                "9"
-            ],
-            "commands": [
-                "workbench.action.openEditorAtIndex9"
-            ]
-        },
-        // ========================================================================
-        // Split Management
-        // ========================================================================
-        {
-            "before": [
-                "<leader>",
-                "s"
-            ],
-            "commands": [
-                "workbench.action.splitEditorDown"
-            ]
-        },
-        {
-            "before": [
-                "<leader>",
-                "v"
-            ],
-            "commands": [
-                "workbench.action.splitEditorRight"
-            ]
-        },
-        {
-            "before": [
-                "<leader>",
-                "="
-            ],
-            "commands": [
-                "workbench.action.evenEditorWidths"
             ]
         }
     ],
@@ -623,5 +349,6 @@
     "chat.agent.enabled": false,
     "[jsonc]": {
         "editor.defaultFormatter": "vscode.json-language-features"
-    }
+    },
+    "chat.disableAIFeatures": true
 }
