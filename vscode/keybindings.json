@@ -87,5 +87,132 @@
         "key": "ctrl+k",
         "command": "-workbench.action.terminal.clear",
         "when": "terminalFocus"
+    },
+    {
+        "key": "cmd+b",
+        "command": "-workbench.action.toggleSidebarVisibility"
+    },
+    // ========================================================================
+    // Editor Group Navigation (Ctrl+hjkl - works globally, including empty panes)
+    // ========================================================================
+    {
+        "key": "ctrl+h",
+        "command": "workbench.action.focusLeftGroup"
+    },
+    {
+        "key": "ctrl+l",
+        "command": "workbench.action.focusRightGroup"
+    },
+    {
+        "key": "ctrl+j",
+        "command": "workbench.action.focusBelowGroup"
+    },
+    {
+        "key": "ctrl+k",
+        "command": "workbench.action.focusAboveGroup"
+    },
+    // ========================================================================
+    // Leader Key Commands (Cmd+B prefix - consistent with terminal config)
+    // Note: cmd on macOS automatically maps to ctrl on Windows/Linux
+    // ========================================================================
+    {
+        "key": "cmd+b space",
+        "command": "whichkey.show"
+    },
+    {
+        "key": "cmd+b e",
+        "command": "workbench.view.explorer"
+    },
+    {
+        "key": "cmd+b f",
+        "command": "workbench.action.findInFiles"
+    },
+    {
+        "key": "cmd+b g",
+        "command": "workbench.view.scm"
+    },
+    {
+        "key": "cmd+b t",
+        "command": "workbench.view.extensions"
+    },
+    {
+        "key": "cmd+b b",
+        "command": "workbench.action.toggleSidebarVisibility"
+    },
+    {
+        "key": "cmd+b shift+`",
+        "command": "workbench.action.terminal.toggleTerminal"
+    },
+    {
+        "key": "cmd+b shift+;",
+        "command": "workbench.action.showCommands"
+    },
+    {
+        "key": "cmd+b o",
+        "command": "workbench.action.quickOpen"
+    },
+    {
+        "key": "cmd+b w",
+        "command": "workbench.action.closeActiveEditor"
+    },
+    {
+        "key": "cmd+b c",
+        "command": "workbench.action.files.newUntitledFile"
+    },
+    {
+        "key": "cmd+b n",
+        "command": "workbench.action.nextEditor"
+    },
+    {
+        "key": "cmd+b p",
+        "command": "workbench.action.previousEditor"
+    },
+    {
+        "key": "cmd+b 1",
+        "command": "workbench.action.openEditorAtIndex1"
+    },
+    {
+        "key": "cmd+b 2",
+        "command": "workbench.action.openEditorAtIndex2"
+    },
+    {
+        "key": "cmd+b 3",
+        "command": "workbench.action.openEditorAtIndex3"
+    },
+    {
+        "key": "cmd+b 4",
+        "command": "workbench.action.openEditorAtIndex4"
+    },
+    {
+        "key": "cmd+b 5",
+        "command": "workbench.action.openEditorAtIndex5"
+    },
+    {
+        "key": "cmd+b 6",
+        "command": "workbench.action.openEditorAtIndex6"
+    },
+    {
+        "key": "cmd+b 7",
+        "command": "workbench.action.openEditorAtIndex7"
+    },
+    {
+        "key": "cmd+b 8",
+        "command": "workbench.action.openEditorAtIndex8"
+    },
+    {
+        "key": "cmd+b 9",
+        "command": "workbench.action.openEditorAtIndex9"
+    },
+    {
+        "key": "cmd+b s",
+        "command": "workbench.action.splitEditorDown"
+    },
+    {
+        "key": "cmd+b v",
+        "command": "workbench.action.splitEditorRight"
+    },
+    {
+        "key": "cmd+b shift+=",
+        "command": "workbench.action.evenEditorWidths"
     }
 ]
