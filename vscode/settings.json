@@ -28,9 +28,6 @@
     // ==========================================================================
     // Editor - Language-Specific Formatting
     // ==========================================================================
-    "[css]": {
-        "editor.defaultFormatter": "aeschli.vscode-css-formatter"
-    },
     "[html]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
@@ -50,77 +47,6 @@
         "editor.defaultFormatter": "esbenp.prettier-vscode",
         "editor.tabSize": 2
     },
-    // ==========================================================================
-    // VSCodeVim Configuration
-    // ==========================================================================
-    // Leader key (matches neovim)
-    "vim.leader": "<space>",
-    "vim.timeout": 1000,
-    // Core vim features
-    "vim.useSystemClipboard": true,
-    "vim.useCtrlKeys": true,
-    "vim.hlsearch": true,
-    "vim.incsearch": true,
-    "vim.ignorecase": true,
-    "vim.smartcase": true,
-    // Visual feedback
-    "vim.highlightedyank.enable": true,
-    "vim.highlightedyank.duration": 200,
-    // Enable plugins (replaces neovim plugins)
-    "vim.surround": true, // Replaces mini.surround
-    "vim.easymotion": true, // Replaces leap.nvim
-    "vim.sneak": true, // Two-character search
-    "vim.sneakUseIgnorecaseAndSmartcase": true,
-    // EasyMotion colors (Gruvbox theme)
-    "vim.easymotionMarkerBackgroundColor": "#1d2021",
-    "vim.easymotionMarkerForegroundColorOneChar": "#fb4934",
-    "vim.easymotionMarkerForegroundColorTwoCharFirst": "#fe8019",
-    "vim.easymotionMarkerForegroundColorTwoCharSecond": "#fabd2f",
-    // Let VSCode handle these (workspace commands handled by keybindings.json)
-    "vim.handleKeys": {
-        "<C-a>": false, // Select all
-        "<C-f>": false, // Find
-        "<C-c>": false, // Copy (visual mode)
-        "<C-h>": false, // Navigate left (global keybinding)
-        "<C-j>": false, // Navigate down (global keybinding)
-        "<C-k>": false, // Navigate up (global keybinding)
-        "<C-l>": false  // Navigate right (global keybinding)
-    },
-    // ==========================================================================
-    // Normal Mode Keybindings (vim-specific only)
-    // ==========================================================================
-    "vim.normalModeKeyBindingsNonRecursive": [
-        // Clear search highlights (vim-specific command)
-        {
-            "before": [
-                "<Esc>"
-            ],
-            "commands": [
-                ":nohl"
-            ]
-        }
-    ],
-    // ==========================================================================
-    // Visual Mode Keybindings
-    // ==========================================================================
-    "vim.visualModeKeyBindingsNonRecursive": [
-        {
-            "before": [
-                ">"
-            ],
-            "commands": [
-                "editor.action.indentLines"
-            ]
-        },
-        {
-            "before": [
-                "<"
-            ],
-            "commands": [
-                "editor.action.outdentLines"
-            ]
-        }
-    ],
     // ==========================================================================
     // Search & Navigation
     // ==========================================================================
@@ -334,8 +260,6 @@
             ]
         }
     ],
-    // Python
-    "python.defaultInterpreterPath": "/opt/anaconda3/envs/cs4910/bin/python",
     // TypeScript/JavaScript
     "typescript.updateImportsOnFileMove.enabled": "always",
     "javascript.updateImportsOnFileMove.enabled": "always",
@@ -343,12 +267,16 @@
     "cmake.configureOnOpen": true,
     // Red Hat (disable telemetry)
     "redhat.telemetry.enabled": false,
-    // Claude Code
-    "claudeCode.useTerminal": true,
     // GitHub Copilot Chat
     "chat.agent.enabled": false,
     "[jsonc]": {
         "editor.defaultFormatter": "vscode.json-language-features"
     },
-    "chat.disableAIFeatures": true
+    "claudeCode.useTerminal": true,
+    "extensions.experimental.affinity": {
+        "asvetliakov.vscode-neovim": 1
+    },
+    "vscode-neovim.neovimInitVimPaths.linux": "/home/matt/.config/nvim/init.lua",
+    "python.createEnvironment.trigger": "off"
 }
+
