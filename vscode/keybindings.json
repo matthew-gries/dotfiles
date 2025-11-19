@@ -45,8 +45,36 @@
     },
     {
         "key": "escape",
+        "command": "workbench.action.focusFirstEditorGroup",
+        "when": "searchViewletVisible && searchInputBoxFocus"
+    },
+    {
+        "key": "escape",
         "command": "workbench.action.focusActiveEditorGroup",
         "when": "extensionsFocus && !inputFocus"
+    },
+    // ========================================================================
+    // Search Result Navigation
+    // ========================================================================
+    {
+        "key": "cmd+n",
+        "command": "search.action.focusNextSearchResult",
+        "when": "hasSearchResult && searchViewletVisible && isMac"
+    },
+    {
+        "key": "cmd+p",
+        "command": "search.action.focusPreviousSearchResult",
+        "when": "hasSearchResult && searchViewletVisible && isMac"
+    },
+    {
+        "key": "ctrl+n",
+        "command": "search.action.focusNextSearchResult",
+        "when": "hasSearchResult && searchViewletVisible && !isMac"
+    },
+    {
+        "key": "ctrl+p",
+        "command": "search.action.focusPreviousSearchResult",
+        "when": "hasSearchResult && searchViewletVisible && !isMac"
     },
     // ========================================================================
     // Terminal Toggle (Ctrl+` to switch between terminal and editor)
@@ -90,7 +118,13 @@
     },
     {
         "key": "cmd+b",
-        "command": "-workbench.action.toggleSidebarVisibility"
+        "command": "-workbench.action.toggleSidebarVisibility",
+        "when": "isMac"
+    },
+    {
+        "key": "ctrl+b",
+        "command": "-workbench.action.toggleSidebarVisibility",
+        "when": "!isMac"
     },
     // ========================================================================
     // Editor Group Navigation (Ctrl+hjkl - works globally, including empty panes)
@@ -112,107 +146,359 @@
         "command": "workbench.action.focusAboveGroup"
     },
     // ========================================================================
-    // Leader Key Commands (Cmd+B prefix - consistent with terminal config)
-    // Note: cmd on macOS automatically maps to ctrl on Windows/Linux
+    // Leader Key Commands (Cmd+B prefix on macOS, Ctrl+B on Linux/Windows)
     // ========================================================================
+    // macOS bindings
     {
         "key": "cmd+b space",
-        "command": "whichkey.show"
+        "command": "whichkey.show",
+        "when": "isMac"
     },
     {
         "key": "cmd+b e",
-        "command": "workbench.view.explorer"
+        "command": "workbench.view.explorer",
+        "when": "isMac"
     },
     {
         "key": "cmd+b f",
-        "command": "workbench.action.findInFiles"
+        "command": "workbench.action.findInFiles",
+        "when": "isMac"
     },
     {
         "key": "cmd+b g",
-        "command": "workbench.view.scm"
+        "command": "workbench.view.scm",
+        "when": "isMac"
     },
     {
         "key": "cmd+b t",
-        "command": "workbench.view.extensions"
+        "command": "workbench.view.extensions",
+        "when": "isMac"
     },
     {
         "key": "cmd+b b",
-        "command": "workbench.action.toggleSidebarVisibility"
+        "command": "workbench.action.toggleSidebarVisibility",
+        "when": "isMac"
     },
     {
         "key": "cmd+b shift+`",
-        "command": "workbench.action.terminal.toggleTerminal"
+        "command": "workbench.action.terminal.toggleTerminal",
+        "when": "isMac"
     },
     {
         "key": "cmd+b shift+;",
-        "command": "workbench.action.showCommands"
+        "command": "workbench.action.showCommands",
+        "when": "isMac"
     },
     {
         "key": "cmd+b o",
-        "command": "workbench.action.quickOpen"
+        "command": "workbench.action.quickOpen",
+        "when": "isMac"
     },
     {
         "key": "cmd+b w",
-        "command": "workbench.action.closeActiveEditor"
+        "command": "workbench.action.closeActiveEditor",
+        "when": "isMac"
     },
     {
         "key": "cmd+b c",
-        "command": "workbench.action.files.newUntitledFile"
+        "command": "workbench.action.files.newUntitledFile",
+        "when": "isMac"
     },
     {
         "key": "cmd+b n",
-        "command": "workbench.action.nextEditor"
+        "command": "workbench.action.nextEditor",
+        "when": "isMac"
     },
     {
         "key": "cmd+b p",
-        "command": "workbench.action.previousEditor"
+        "command": "workbench.action.previousEditor",
+        "when": "isMac"
     },
     {
         "key": "cmd+b 1",
-        "command": "workbench.action.openEditorAtIndex1"
+        "command": "workbench.action.openEditorAtIndex1",
+        "when": "isMac"
     },
     {
         "key": "cmd+b 2",
-        "command": "workbench.action.openEditorAtIndex2"
+        "command": "workbench.action.openEditorAtIndex2",
+        "when": "isMac"
     },
     {
         "key": "cmd+b 3",
-        "command": "workbench.action.openEditorAtIndex3"
+        "command": "workbench.action.openEditorAtIndex3",
+        "when": "isMac"
     },
     {
         "key": "cmd+b 4",
-        "command": "workbench.action.openEditorAtIndex4"
+        "command": "workbench.action.openEditorAtIndex4",
+        "when": "isMac"
     },
     {
         "key": "cmd+b 5",
-        "command": "workbench.action.openEditorAtIndex5"
+        "command": "workbench.action.openEditorAtIndex5",
+        "when": "isMac"
     },
     {
         "key": "cmd+b 6",
-        "command": "workbench.action.openEditorAtIndex6"
+        "command": "workbench.action.openEditorAtIndex6",
+        "when": "isMac"
     },
     {
         "key": "cmd+b 7",
-        "command": "workbench.action.openEditorAtIndex7"
+        "command": "workbench.action.openEditorAtIndex7",
+        "when": "isMac"
     },
     {
         "key": "cmd+b 8",
-        "command": "workbench.action.openEditorAtIndex8"
+        "command": "workbench.action.openEditorAtIndex8",
+        "when": "isMac"
     },
     {
         "key": "cmd+b 9",
-        "command": "workbench.action.openEditorAtIndex9"
+        "command": "workbench.action.openEditorAtIndex9",
+        "when": "isMac"
     },
     {
         "key": "cmd+b s",
-        "command": "workbench.action.splitEditorDown"
+        "command": "workbench.action.splitEditorDown",
+        "when": "isMac"
     },
     {
         "key": "cmd+b v",
-        "command": "workbench.action.splitEditorRight"
+        "command": "workbench.action.splitEditorRight",
+        "when": "isMac"
     },
     {
         "key": "cmd+b shift+=",
-        "command": "workbench.action.evenEditorWidths"
+        "command": "workbench.action.evenEditorWidths",
+        "when": "isMac"
+    },
+    {
+        "key": "cmd+b h",
+        "command": "workbench.action.focusLeftGroup",
+        "when": "isMac"
+    },
+    {
+        "key": "cmd+b j",
+        "command": "workbench.action.focusBelowGroup",
+        "when": "isMac"
+    },
+    {
+        "key": "cmd+b k",
+        "command": "workbench.action.focusAboveGroup",
+        "when": "isMac"
+    },
+    {
+        "key": "cmd+b l",
+        "command": "workbench.action.focusRightGroup",
+        "when": "isMac"
+    },
+    {
+        "key": "cmd+b x",
+        "command": "workbench.action.closeEditorsInGroup",
+        "when": "isMac"
+    },
+    {
+        "key": "cmd+b shift+t",
+        "command": "claude-vscode.terminal.open",
+        "when": "isMac"
+    },
+    {
+        "key": "cmd+b shift+k",
+        "command": "workbench.action.newGroupAbove",
+        "when": "isMac"
+    },
+    {
+        "key": "cmd+b shift+j",
+        "command": "workbench.action.newGroupBelow",
+        "when": "isMac"
+    },
+    {
+        "key": "cmd+b shift+h",
+        "command": "workbench.action.newGroupLeft",
+        "when": "isMac"
+    },
+    {
+        "key": "cmd+b shift+l",
+        "command": "workbench.action.newGroupRight",
+        "when": "isMac"
+    },
+    // Linux/Windows bindings
+    {
+        "key": "ctrl+b space",
+        "command": "whichkey.show",
+        "when": "!isMac"
+    },
+    {
+        "key": "ctrl+b e",
+        "command": "workbench.view.explorer",
+        "when": "!isMac"
+    },
+    {
+        "key": "ctrl+b f",
+        "command": "workbench.action.findInFiles",
+        "when": "!isMac"
+    },
+    {
+        "key": "ctrl+b g",
+        "command": "workbench.view.scm",
+        "when": "!isMac"
+    },
+    {
+        "key": "ctrl+b t",
+        "command": "workbench.view.extensions",
+        "when": "!isMac"
+    },
+    {
+        "key": "ctrl+b b",
+        "command": "workbench.action.toggleSidebarVisibility",
+        "when": "!isMac"
+    },
+    {
+        "key": "ctrl+b shift+`",
+        "command": "workbench.action.terminal.toggleTerminal",
+        "when": "!isMac"
+    },
+    {
+        "key": "ctrl+b shift+;",
+        "command": "workbench.action.showCommands",
+        "when": "!isMac"
+    },
+    {
+        "key": "ctrl+b o",
+        "command": "workbench.action.quickOpen",
+        "when": "!isMac"
+    },
+    {
+        "key": "ctrl+b w",
+        "command": "workbench.action.closeActiveEditor",
+        "when": "!isMac"
+    },
+    {
+        "key": "ctrl+b c",
+        "command": "workbench.action.files.newUntitledFile",
+        "when": "!isMac"
+    },
+    {
+        "key": "ctrl+b n",
+        "command": "workbench.action.nextEditor",
+        "when": "!isMac"
+    },
+    {
+        "key": "ctrl+b p",
+        "command": "workbench.action.previousEditor",
+        "when": "!isMac"
+    },
+    {
+        "key": "ctrl+b 1",
+        "command": "workbench.action.openEditorAtIndex1",
+        "when": "!isMac"
+    },
+    {
+        "key": "ctrl+b 2",
+        "command": "workbench.action.openEditorAtIndex2",
+        "when": "!isMac"
+    },
+    {
+        "key": "ctrl+b 3",
+        "command": "workbench.action.openEditorAtIndex3",
+        "when": "!isMac"
+    },
+    {
+        "key": "ctrl+b 4",
+        "command": "workbench.action.openEditorAtIndex4",
+        "when": "!isMac"
+    },
+    {
+        "key": "ctrl+b 5",
+        "command": "workbench.action.openEditorAtIndex5",
+        "when": "!isMac"
+    },
+    {
+        "key": "ctrl+b 6",
+        "command": "workbench.action.openEditorAtIndex6",
+        "when": "!isMac"
+    },
+    {
+        "key": "ctrl+b 7",
+        "command": "workbench.action.openEditorAtIndex7",
+        "when": "!isMac"
+    },
+    {
+        "key": "ctrl+b 8",
+        "command": "workbench.action.openEditorAtIndex8",
+        "when": "!isMac"
+    },
+    {
+        "key": "ctrl+b 9",
+        "command": "workbench.action.openEditorAtIndex9",
+        "when": "!isMac"
+    },
+    {
+        "key": "ctrl+b s",
+        "command": "workbench.action.splitEditorDown",
+        "when": "!isMac"
+    },
+    {
+        "key": "ctrl+b v",
+        "command": "workbench.action.splitEditorRight",
+        "when": "!isMac"
+    },
+    {
+        "key": "ctrl+b shift+=",
+        "command": "workbench.action.evenEditorWidths",
+        "when": "!isMac"
+    },
+    {
+        "key": "ctrl+b h",
+        "command": "workbench.action.focusLeftGroup",
+        "when": "!isMac"
+    },
+    {
+        "key": "ctrl+b j",
+        "command": "workbench.action.focusBelowGroup",
+        "when": "!isMac"
+    },
+    {
+        "key": "ctrl+b k",
+        "command": "workbench.action.focusAboveGroup",
+        "when": "!isMac"
+    },
+    {
+        "key": "ctrl+b l",
+        "command": "workbench.action.focusRightGroup",
+        "when": "!isMac"
+    },
+    {
+        "key": "ctrl+b x",
+        "command": "workbench.action.closeEditorsInGroup",
+        "when": "!isMac"
+    },
+    {
+        "key": "ctrl+b shift+t",
+        "command": "claude-vscode.terminal.open",
+        "when": "!isMac"
+    },
+    {
+        "key": "ctrl+b shift+k",
+        "command": "workbench.action.newGroupAbove",
+        "when": "!isMac"
+    },
+    {
+        "key": "ctrl+b shift+j",
+        "command": "workbench.action.newGroupBelow",
+        "when": "!isMac"
+    },
+    {
+        "key": "ctrl+b shift+h",
+        "command": "workbench.action.newGroupLeft",
+        "when": "!isMac"
+    },
+    {
+        "key": "ctrl+b shift+l",
+        "command": "workbench.action.newGroupRight",
+        "when": "!isMac"
     }
 ]
+
