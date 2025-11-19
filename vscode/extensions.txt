@@ -11,9 +11,7 @@ google.gemini-cli-vscode-ide-companion
 grapecity.gc-excelviewer
 gruntfuggly.todo-tree
 james-yu.latex-workshop
-josetr.cmake-language-support-vscode
 mathiasfrohlich.kotlin
-mquandalle.graphql
 ms-azuretools.vscode-containers
 ms-azuretools.vscode-docker
 ms-dotnettools.vscode-dotnet-runtime
@@ -37,14 +35,11 @@ ms-vscode.cpptools-extension-pack
 ms-vscode.cpptools-themes
 ms-vscode.remote-explorer
 msjsdiag.vscode-react-native
-prisma.prisma
 redhat.java
 rust-lang.rust-analyzer
 sainnhe.gruvbox-material
-slevesque.shader
 tal7aouy.theme
 tomphilbin.gruvbox-themes
-twxs.cmake
 vadimcn.vscode-lldb
 vscjava.vscode-gradle
 vscjava.vscode-java-debug
@@ -52,6 +47,4 @@ vscjava.vscode-java-dependency
 vscjava.vscode-java-pack
 vscjava.vscode-java-test
 vscjava.vscode-maven
-vscodevim.vim
-vspacecode.whichkey
-yoshinorin.current-file-path
+asvetliakov.vscode-neovim
