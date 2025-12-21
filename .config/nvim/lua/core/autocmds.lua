@@ -53,3 +53,11 @@ vim.api.nvim_create_autocmd('FileType', {
 --     vim.lsp.buf.format({ async = false })
 --   end,
 -- })
+
+-- Workaround for uv_loop_close() hang on exit
+-- Gives the event loop time to process close callbacks
+vim.api.nvim_create_autocmd({ "VimLeave" }, {
+  callback = function()
+    vim.cmd("sleep 100m")
+  end,
+})
