@@ -12,9 +12,6 @@ vim.o.number = true
 -- Enable mouse mode, can be useful for resizing splits for example!
 vim.o.mouse = 'a'
 
--- Don't show the mode, since it's already in the status line
-vim.o.showmode = false
-
 -- Sync clipboard between OS and Neovim.
 --  Schedule the setting after `UiEnter` because it can increase startup-time.
 --  Remove this option if you want your OS clipboard to remain independent.
@@ -38,9 +35,6 @@ vim.o.undofile = true
 vim.o.ignorecase = true
 vim.o.smartcase = true
 
--- Keep signcolumn on by default
-vim.o.signcolumn = 'yes'
-
 -- Decrease update time
 vim.o.updatetime = 250
 
@@ -51,27 +45,6 @@ vim.o.timeoutlen = 50
 vim.o.splitright = true
 vim.o.splitbelow = true
 
--- Sets how neovim will display certain whitespace characters in the editor.
---  See `:help 'list'`
---  and `:help 'listchars'`
---
---  Notice listchars is set using `vim.opt` instead of `vim.o`.
---  It is very similar to `vim.o` but offers an interface for conveniently interacting with tables.
---   See `:help lua-options`
---   and `:help lua-options-guide`
-vim.o.list = true
-vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
-
--- Preview substitutions live, as you type!
-vim.o.inccommand = 'split'
-
--- Show which line your cursor is on
-vim.o.cursorline = true
-
--- Show a vertical line at column 80 (helps with line length)
--- You can customize this per-filetype in autocmds.lua
-vim.o.colorcolumn = ''
-
 -- Minimal number of screen lines to keep above and below the cursor.
 vim.o.scrolloff = 10
 
@@ -79,3 +52,25 @@ vim.o.scrolloff = 10
 -- instead raise a dialog asking if you wish to save the current file(s)
 -- See `:help 'confirm'`
 vim.o.confirm = true
+
+-- [[ UI-specific options (not visible/functional in VS Code) ]]
+if not vim.g.vscode then
+  -- Don't show the mode, since it's already in the status line
+  vim.o.showmode = false
+
+  -- Keep signcolumn on by default
+  vim.o.signcolumn = 'yes'
+
+  -- Sets how neovim will display certain whitespace characters in the editor.
+  vim.o.list = true
+  vim.opt.listchars = { tab = '» ', trail = '·', nbsp = '␣' }
+
+  -- Preview substitutions live, as you type!
+  vim.o.inccommand = 'split'
+
+  -- Show which line your cursor is on
+  vim.o.cursorline = true
+
+  -- Show a vertical line at column 80 (helps with line length)
+  vim.o.colorcolumn = ''
+end

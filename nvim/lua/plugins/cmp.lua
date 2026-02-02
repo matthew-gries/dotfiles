@@ -59,8 +59,8 @@ return {
 
         -- Keymappings for completion
         mapping = cmp.mapping.preset.insert {
-          -- Trigger completion manually with Ctrl+Space
-          ['<C-Space>'] = cmp.mapping.complete(),
+          -- Trigger completion manually with Ctrl+j
+          ['<C-j>'] = cmp.mapping.complete(),
 
           -- Navigate completion items
           ['<C-n>'] = cmp.mapping.select_next_item(), -- Next item

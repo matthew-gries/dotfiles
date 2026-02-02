@@ -288,12 +288,12 @@ curl -s "https://get.sdkman.io" | bash
 
 ```
 dotfiles/
-├── .config/
-│   └── nvim/
-│       └── init.lua          # Neovim configuration (Kickstart-based)
-├── .wezterm.lua              # WezTerm terminal configuration
+├── nvim/                     # Neovim configuration (Kickstart-based)
+├── wezterm/
+│   └── .wezterm.lua          # WezTerm terminal configuration
 ├── macos/
 │   └── .zshrc                # Zsh shell configuration
+├── install.sh                # Symlink installation script
 └── README.md                 # This file
 ```
 
@@ -309,18 +309,16 @@ dotfiles/
 
 2. Run the platform-specific installation steps above (macOS or Arch Linux)
 
-3. Create symlinks (or copy files):
+3. Run the install script to create symlinks:
    ```bash
-   # WezTerm
-   ln -sf ~/.dotfiles/.wezterm.lua ~/.wezterm.lua
-   
-   # Zsh
-   ln -sf ~/.dotfiles/macos/.zshrc ~/.zshrc
-   
-   # Neovim
-   mkdir -p ~/.config/nvim
-   ln -sf ~/.dotfiles/.config/nvim/init.lua ~/.config/nvim/init.lua
+   ./install.sh
    ```
+
+   This will create symlinks for:
+   - `nvim/` -> `~/.config/nvim`
+   - `wezterm/.wezterm.lua` -> `~/.wezterm.lua`
+
+   If existing files are found, they will be backed up with a `.backup` suffix.
 
 4. Restart your terminal and enjoy!
 

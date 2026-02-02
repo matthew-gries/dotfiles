@@ -6,9 +6,10 @@ return {
 
   -- Leap - Fast navigation with 2-character search
   -- Press 'gs' followed by 2 characters to jump anywhere on screen
-  -- https://github.com/ggandor/leap.nvim
+  -- https://codeberg.org/andyg/leap.nvim
   {
-    'ggandor/leap.nvim',
+    'https://codeberg.org/andyg/leap.nvim',
+    name = 'leap',
     lazy = false, -- Load immediately
     config = function()
       -- Use 'gs' instead of 's' to avoid conflict with mini.surround
@@ -23,7 +24,18 @@ return {
   {
     'windwp/nvim-autopairs',
     event = 'InsertEnter',
-    opts = {},
+    config = function()
+      local autopairs = require 'nvim-autopairs'
+      local Rule = require 'nvim-autopairs.rule'
+
+      autopairs.setup {}
+
+      -- Add rules for block comments
+      autopairs.add_rules {
+        Rule('/*', ' */'),
+        Rule('/**', ' */'),
+      }
+    end,
   },
 
   -- Add indentation guides even on blank lines

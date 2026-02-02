@@ -5,6 +5,7 @@ return {
   -- Mason: Portable package manager for LSP servers, formatters, linters, etc.
   {
     'williamboman/mason.nvim',
+    enabled = true, -- TEMP: testing exit code issue
     config = function()
       require('mason').setup {
         ui = {
@@ -21,6 +22,7 @@ return {
   -- Mason-lspconfig: Bridge between mason.nvim and nvim-lspconfig
   {
     'williamboman/mason-lspconfig.nvim',
+    enabled = true, -- TEMP: testing exit code issue
     dependencies = { 'williamboman/mason.nvim' },
     config = function()
       require('mason-lspconfig').setup {
@@ -30,6 +32,7 @@ return {
           'rust_analyzer', -- Rust
           'ts_ls', -- TypeScript/JavaScript
           'clangd', -- C/C++
+          'gopls', -- Go
         },
         -- Automatically install language servers when entering a buffer
         automatic_installation = true,
@@ -40,6 +43,7 @@ return {
   -- Nvim-lspconfig: Quickstart configs for Neovim's built-in LSP client
   {
     'neovim/nvim-lspconfig',
+    enabled = true, -- TEMP: testing exit code issue
     dependencies = {
       'williamboman/mason.nvim',
       'williamboman/mason-lspconfig.nvim',
@@ -107,8 +111,9 @@ return {
             vim.api.nvim_create_autocmd('LspDetach', {
               group = vim.api.nvim_create_augroup('lsp-detach', { clear = true }),
               callback = function(event2)
-                vim.lsp.buf.clear_references()
-                vim.api.nvim_clear_autocmds { group = 'lsp-highlight', buffer = event2.buf }
+                -- Use pcall to avoid errors when buffer is already gone (e.g., on quit)
+                pcall(vim.lsp.buf.clear_references)
+                pcall(vim.api.nvim_clear_autocmds, { group = 'lsp-highlight', buffer = event2.buf })
               end,
             })
           end
@@ -239,16 +244,33 @@ return {
         capabilities = capabilities,
       })
 
-      -- Enable language servers for the configured filetypes
-      vim.lsp.enable({ 'pyright', 'rust_analyzer', 'ts_ls', 'clangd' })
-
-      -- Format on save
-      vim.api.nvim_create_autocmd('BufWritePre', {
-        group = vim.api.nvim_create_augroup('lsp-format-on-save', { clear = true }),
-        callback = function()
-          vim.lsp.buf.format { async = false }
-        end,
+      -- Go: gopls
+      vim.lsp.config('gopls', {
+        cmd = { 'gopls' },
+        filetypes = { 'go', 'gomod', 'gowork', 'gotmpl' },
+        root_markers = { 'go.work', 'go.mod', '.git' },
+        capabilities = capabilities,
+        settings = {
+          gopls = {
+            completeUnimported = true,
+            usePlaceholders = true,
+            analyses = {
+              unusedparams = true,
+            },
+          },
+        },
       })
+
+      -- Enable language servers for the configured filetypes
+      vim.lsp.enable({ 'pyright', 'rust_analyzer', 'ts_ls', 'clangd', 'gopls' })
+
+      -- Format on save (disabled - was causing non-zero exit codes)
+      -- vim.api.nvim_create_autocmd('BufWritePre', {
+      --   group = vim.api.nvim_create_augroup('lsp-format-on-save', { clear = true }),
+      --   callback = function()
+      --     vim.lsp.buf.format { async = false }
+      --   end,
+      -- })
     end,
   },
 }
