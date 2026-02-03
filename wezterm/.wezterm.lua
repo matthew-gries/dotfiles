@@ -20,7 +20,7 @@ local leader_mod = "CTRL"
 if wezterm.target_triple:find("darwin") then
 	leader_mod = "CMD"
 end
-config.leader = { key = "b", mods = "CTRL", timeout_milliseconds = 1000 }
+config.leader = { key = "b", mods = leader_mod, timeout_milliseconds = 1000 }
 
 -- Set scrollback buffer size
 config.scrollback_lines = 6000
