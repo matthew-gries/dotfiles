@@ -120,6 +120,27 @@ examples of adding popularly requested plugins.
 
 [The Only Video You Need to Get Started with Neovim](https://youtu.be/m8C0Cq9Uv9o)
 
+### Buffers, Windows, and Tabs
+
+*   **Buffer:** The **File** loaded in memory.
+    *   Think of this as the actual text content you are editing.
+    *   If you have 10 files open in Neovim, you have 10 buffers, even if you can only see one of them on the screen.
+*   **Window:** A **Viewport** on a buffer.
+    *   This is the rectangular area on your screen showing the text.
+    *   You can have multiple windows showing *the same* buffer (e.g., viewing the top and bottom of the same file at once).
+*   **Tab (Tab Page):** A **Layout** of windows.
+    *   **Crucial Difference:** Unlike a web browser or VS Code where "1 Tab = 1 File", in Vim/Neovim "1 Tab = A specific arrangement of windows".
+    *   You might have "Tab 1" split into 3 windows for code, and "Tab 2" with a single large window for logs.
+
+#### Summary Table
+
+| Action | **Buffer** (The File) | **Window** (The View) | **Tab** (The Layout) |
+| :--- | :--- | :--- | :--- |
+| **Create** | `:e file.txt` | `:vsplit` / `:split` | `:tabnew` |
+| **Close** | `:bd` | `:q` | `:tabclose` |
+| **Next** | `:bn` | `Ctrl + l` / `Ctrl + j` | `gt` |
+| **Prev** | `:bp` | `Ctrl + h` / `Ctrl + k` | `gT` |
+
 ### FAQ
 
 * What should I do if I already have a pre-existing Neovim configuration?

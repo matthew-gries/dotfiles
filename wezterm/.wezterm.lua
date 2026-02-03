@@ -58,6 +58,23 @@ config.keys = { -- Send "CTRL+B" to the terminal when pressing CTRL+B, CTRL+B
 		mods = "LEADER",
 		action = wezterm.action.SplitHorizontal({ domain = "CurrentPaneDomain" }),
 	},
+	-- Small split shortcuts (for command terminal while coding)
+	{
+		key = "_",
+		mods = "LEADER|SHIFT",
+		action = wezterm.action.SplitPane({
+			direction = "Down",
+			size = { Percent = 30 },
+		}),
+	},
+	{
+		key = "|",
+		mods = "LEADER|SHIFT",
+		action = wezterm.action.SplitPane({
+			direction = "Right",
+			size = { Percent = 30 },
+		}),
+	},
 
 	-- Pane management
 	{
@@ -259,14 +276,11 @@ config.keys = { -- Send "CTRL+B" to the terminal when pressing CTRL+B, CTRL+B
 			one_shot = false,
 		}),
 	},
-	-- Activate pane selection mode for closing
+	-- Close current pane
 	{
 		key = "x",
 		mods = "LEADER",
-		action = wezterm.action.ActivateKeyTable({
-			name = "close_pane",
-			one_shot = true,
-		}),
+		action = wezterm.action.CloseCurrentPane({ confirm = false }),
 	},
 
 	-- Copy mode and text selection
@@ -321,12 +335,6 @@ config.key_tables = {
 		{ key = "Escape", action = "PopKeyTable" },
 	},
 
-	-- Key table for pane closing confirmation
-	close_pane = {
-		{ key = "y", action = wezterm.action.CloseCurrentPane({ confirm = false }) },
-		{ key = "n", action = "PopKeyTable" },
-		{ key = "Escape", action = "PopKeyTable" },
-	},
 }
 
 -- Finally, return the configuration to wezterm:

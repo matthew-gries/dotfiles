@@ -39,3 +39,23 @@ vim.keymap.set('n', '<leader>m', function()
   vim.cmd 'enew'
   vim.fn.setline(1, vim.split(vim.fn.execute 'messages', '\n'))
 end, { desc = 'View [M]essages in buffer' })
+
+-- Open Neovim log file in buffer
+vim.keymap.set('n', '<leader>L', function()
+  vim.cmd('edit ' .. vim.fn.stdpath('log') .. '/log')
+end, { desc = 'Open Neovim [L]og file' })
+
+-- Open all diagnostics in buffer
+vim.keymap.set('n', '<leader>D', function()
+  local lines = {}
+  local diagnostics = vim.diagnostic.get(nil) -- nil = all buffers
+  for _, d in ipairs(diagnostics) do
+    local bufname = vim.api.nvim_buf_get_name(d.bufnr)
+    local severity = vim.diagnostic.severity[d.severity]
+    table.insert(lines, string.format('%s:%d:%d [%s] %s', bufname, d.lnum + 1, d.col + 1, severity, d.message))
+  end
+  vim.cmd('enew')
+  vim.fn.setline(1, lines)
+  vim.bo.buftype = 'nofile'
+  vim.bo.bufhidden = 'wipe'
+end, { desc = 'View all [D]iagnostics in buffer' })
