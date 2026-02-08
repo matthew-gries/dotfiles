@@ -1,5 +1,5 @@
 -- Autocompletion setup with nvim-cmp
--- Configured for MANUAL triggering (not automatic)
+-- Auto-triggers as you type; also manually triggerable with <C-j>
 
 return {
   -- Main completion plugin
@@ -46,9 +46,9 @@ return {
           end,
         },
 
-        -- MANUAL TRIGGERING: Do not auto-show completion menu
+        -- Auto-show completion menu as you type; also triggerable with <C-j>
         completion = {
-          autocomplete = false, -- Disable automatic completion popup
+          completeopt = 'menu,menuone,noinsert',
         },
 
         -- Completion menu appearance
@@ -121,7 +121,7 @@ return {
 
         -- Experimental features
         experimental = {
-          ghost_text = false, -- Disable ghost text since we're using manual trigger
+          ghost_text = true,
         },
       }
     end,
