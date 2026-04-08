@@ -334,7 +334,24 @@ config.key_tables = {
 		-- Cancel the mode by pressing escape
 		{ key = "Escape", action = "PopKeyTable" },
 	},
+}
 
+-- Windows specific
+config.default_prog = { "wsl.exe", "~" }
+
+config.launch_menu = {
+    {
+      label = 'WSL (Ubuntu)',
+      args = { 'wsl.exe', '-d', 'Ubuntu' },
+    },
+    {
+      label = 'PowerShell',
+      args = { 'powershell.exe', '-NoLogo' },
+    },
+    {
+      label = 'CMD',
+      args = { 'cmd.exe' },
+    },
 }
 
 -- Finally, return the configuration to wezterm:
