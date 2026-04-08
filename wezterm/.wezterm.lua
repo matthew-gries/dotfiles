@@ -351,4 +351,19 @@ config.key_tables = {
 }
 
 -- Finally, return the configuration to wezterm:
+if wezterm.target_triple:find("windows") then
+	config.default_prog = { "powershell.exe", "-NoLogo" }
+
+	config.launch_menu = {
+		{
+			label = "PowerShell",
+			args = { "powershell.exe", "-NoLogo" },
+		},
+		{
+			label = "CMD",
+			args = { "cmd.exe" },
+		},
+	}
+end
+
 return config
