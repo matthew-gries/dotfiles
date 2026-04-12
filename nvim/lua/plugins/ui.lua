@@ -2,21 +2,38 @@
 
 return {
   -- Gruvbox colorscheme
-  {
-    'ellisonleao/gruvbox.nvim',
-    priority = 1000, -- Make sure to load this before all the other start plugins.
-    config = function()
-      require('gruvbox').setup {
-        -- You can configure gruvbox options here
-        -- contrast = "hard", -- can be "hard", "soft" or empty string
-        -- transparent_mode = true, -- Enable transparency
-      }
+  -- {
+  --   'ellisonleao/gruvbox.nvim',
+  --   priority = 1000, -- Make sure to load this before all the other start plugins.
+  --   config = function()
+  --     require('gruvbox').setup {
+  --       -- You can configure gruvbox options here
+  --       -- contrast = "hard", -- can be "hard", "soft" or empty string
+  --       -- transparent_mode = true, -- Enable transparency
+  --     }
+  --
+  --     -- Load the colorscheme here.
+  --     -- You can also use 'gruvbox-light' for light mode
+  --     vim.cmd.colorscheme 'gruvbox'
+  --   end,
+  -- },
 
-      -- Load the colorscheme here.
-      -- You can also use 'gruvbox-light' for light mode
-      vim.cmd.colorscheme 'gruvbox'
-    end,
-  },
+    {
+        "catppuccin/nvim",
+        name = "catppuccin",
+        priority = 1000,
+        config = function()
+          require('catppuccin').setup {
+            -- You can configure gruvbox options here
+            -- contrast = "hard", -- can be "hard", "soft" or empty string
+            -- transparent_mode = true, -- Enable transparency
+          }
+
+          -- Load the colorscheme here.
+          -- You can also use 'gruvbox-light' for light mode
+          vim.cmd.colorscheme 'catppuccin-mocha'
+        end,
+    },
 
   -- Useful plugin to show you pending keybinds.
   {
