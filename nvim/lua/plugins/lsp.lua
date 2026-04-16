@@ -180,7 +180,8 @@ return {
             cargo = {
               allFeatures = true,
             },
-            checkOnSave = {
+            checkOnSave = true,
+            check = {
               command = 'clippy', -- Use clippy for extra lints
             },
             inlayHints = {
