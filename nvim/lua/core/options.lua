@@ -5,9 +5,12 @@
 
 -- Make line numbers default
 vim.o.number = true
--- You can also add relative line numbers, to help with jumping.
---  Experiment for yourself to see if you like it!
--- vim.o.relativenumber = true
+vim.o.relativenumber = true
+
+-- :ToggleRelativeNumber turns relative line numbers on/off for the session
+vim.api.nvim_create_user_command('ToggleRelativeNumber', function()
+  vim.o.relativenumber = not vim.o.relativenumber
+end, { desc = 'Toggle relative line numbers' })
 
 -- Enable mouse mode, can be useful for resizing splits for example!
 vim.o.mouse = 'a'
