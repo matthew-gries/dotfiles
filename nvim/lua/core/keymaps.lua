@@ -45,6 +45,17 @@ vim.keymap.set('n', '<leader>L', function()
   vim.cmd('edit ' .. vim.fn.stdpath('log') .. '/log')
 end, { desc = 'Open Neovim [L]og file' })
 
+-- Window/split management (leader-based alternative to <C-w> commands)
+vim.keymap.set('n', '<leader>wh', '<C-w>h', { desc = 'Move to left split' })
+vim.keymap.set('n', '<leader>wj', '<C-w>j', { desc = 'Move to lower split' })
+vim.keymap.set('n', '<leader>wk', '<C-w>k', { desc = 'Move to upper split' })
+vim.keymap.set('n', '<leader>wl', '<C-w>l', { desc = 'Move to right split' })
+vim.keymap.set('n', '<leader>wv', '<C-w>v', { desc = 'Vertical split' })
+vim.keymap.set('n', '<leader>ws', '<C-w>s', { desc = 'Horizontal split' })
+vim.keymap.set('n', '<leader>wq', '<C-w>q', { desc = 'Close split' })
+vim.keymap.set('n', '<leader>ww', '<C-w>w', { desc = 'Cycle to next split' })
+vim.keymap.set('n', '<leader>w=', '<C-w>=', { desc = 'Equalize split sizes' })
+
 -- Open all diagnostics in buffer
 vim.keymap.set('n', '<leader>D', function()
   local lines = {}

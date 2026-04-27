@@ -43,16 +43,8 @@ vim.api.nvim_create_autocmd('FileType', {
 --   end,
 -- })
 
--- Format on save (placeholder for when LSP is added back)
--- Uncomment and modify when you add LSP/formatters
--- vim.api.nvim_create_autocmd('BufWritePre', {
---   desc = 'Format on save',
---   group = vim.api.nvim_create_augroup('format-on-save', { clear = true }),
---   pattern = { '*.rs', '*.py', '*.lua' }, -- Add your filetypes
---   callback = function()
---     vim.lsp.buf.format({ async = false })
---   end,
--- })
+-- Format on save is handled by conform.nvim (lua/plugins/formatting.lua)
+-- Toggle per-buffer: <leader>tf | Toggle globally: <leader>tF
 
 -- Workaround for uv_loop_close() hang on exit
 -- Gives the event loop time to process close callbacks

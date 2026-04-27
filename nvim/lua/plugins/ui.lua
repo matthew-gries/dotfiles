@@ -85,6 +85,14 @@ return {
         { '<leader>s', group = '[S]earch' },
         { '<leader>t', group = '[T]oggle' },
         { '<leader>h', group = 'Git [H]unk', mode = { 'n', 'v' } },
+        { '<leader>b', group = '[B]uffer' },
+        { '<leader>b', group = '[B]uffer' },
+        { '<leader>c', group = '[C]ode' },
+        { '<leader>x', group = 'Trouble/Diagnostics' },
+        { '<leader>r', group = '[R]ename' },
+        { '<leader>d', group = '[D]ocument' },
+        { '<leader>w', group = '[W]indow' },
+        { '<leader>W', group = '[W]orkspace' },
       },
     },
   },
@@ -123,16 +131,65 @@ return {
         return '%2l:%-2v'
       end
 
+      -- Buffer deletion without closing the window/split
+      require('mini.bufremove').setup()
+      vim.keymap.set('n', '<leader>bd', function()
+        require('mini.bufremove').delete()
+      end, { desc = '[B]uffer [D]elete' })
+      vim.keymap.set('n', '<leader>bD', function()
+        require('mini.bufremove').delete(0, true)
+      end, { desc = '[B]uffer [D]elete (force)' })
+
       -- ... and there is more!
       --  Check out: https://github.com/echasnovski/mini.nvim
     end,
   },
 
-  -- Highlight todo, notes, etc in comments
+  -- Buffer tab line with LSP diagnostics and catppuccin theming
   {
-    'folke/todo-comments.nvim',
-    event = 'VimEnter',
-    dependencies = { 'nvim-lua/plenary.nvim' },
-    opts = { signs = false },
+    'akinsho/bufferline.nvim',
+    version = '*',
+    dependencies = { 'nvim-tree/nvim-web-devicons' },
+    opts = {
+      options = {
+        -- Delegate buffer closing to mini.bufremove (keeps splits intact)
+        close_command = function(n) require('mini.bufremove').delete(n, false) end,
+        right_mouse_command = function(n) require('mini.bufremove').delete(n, false) end,
+        -- Show LSP error/warning counts on each tab
+        diagnostics = 'nvim_lsp',
+        diagnostics_indicator = function(count, level)
+          local icon = level:match 'error' and ' ' or ' '
+          return ' ' .. icon .. count
+        end,
+        -- Reserve space for neo-tree sidebar so tabs don't overlap it
+        offsets = {
+          {
+            filetype = 'neo-tree',
+            text = 'File Explorer',
+            highlight = 'Directory',
+            separator = true,
+          },
+        },
+        separator_style = 'slant',
+        show_buffer_close_icons = true,
+        show_close_icon = false,
+        color_icons = true,
+      },
+    },
+    config = function(_, opts)
+      require('bufferline').setup(opts)
+
+      -- Cycle buffers with Shift-h/l (common convention) and bracket pairs
+      vim.keymap.set('n', '<S-h>', '<cmd>BufferLineCyclePrev<cr>', { desc = 'Prev buffer' })
+      vim.keymap.set('n', '<S-l>', '<cmd>BufferLineCycleNext<cr>', { desc = 'Next buffer' })
+      vim.keymap.set('n', '[b', '<cmd>BufferLineCyclePrev<cr>', { desc = 'Prev buffer' })
+      vim.keymap.set('n', ']b', '<cmd>BufferLineCycleNext<cr>', { desc = 'Next buffer' })
+
+      -- Pin/unpin a buffer (keeps it anchored in the tab row)
+      vim.keymap.set('n', '<leader>bp', '<cmd>BufferLineTogglePin<cr>', { desc = '[B]uffer [P]in toggle' })
+      -- Close all unpinned buffers at once
+      vim.keymap.set('n', '<leader>bP', '<cmd>BufferLineGroupClose ungrouped<cr>', { desc = '[B]uffer close un[P]inned' })
+    end,
   },
+
 }

@@ -2,6 +2,20 @@
 -- Language Server Protocol setup with Mason for easy installation
 
 return {
+  -- Neovim Lua API completion + type stubs (must load before lua_ls starts)
+  {
+    'folke/lazydev.nvim',
+    ft = 'lua',
+    dependencies = {
+      { 'Bilal2453/luvit-meta', lazy = true }, -- vim.uv type stubs
+    },
+    opts = {
+      library = {
+        { path = 'luvit-meta/library', words = { 'vim%.uv' } },
+      },
+    },
+  },
+
   -- Mason: Portable package manager for LSP servers, formatters, linters, etc.
   {
     'williamboman/mason.nvim',
@@ -33,9 +47,15 @@ return {
           'ts_ls', -- TypeScript/JavaScript
           'clangd', -- C/C++
           'gopls', -- Go
+          'lua_ls', -- Lua
+          'bashls', -- Bash/Shell
+          'jsonls', -- JSON
+          'yamlls', -- YAML
+          'taplo', -- TOML
+          'marksman', -- Markdown
+          'dockerls', -- Dockerfile
+          'eslint', -- ESLint as LSP (JS/TS)
         },
-        -- Automatically install language servers when entering a buffer
-        automatic_installation = true,
       }
     end,
   },
@@ -47,6 +67,7 @@ return {
     dependencies = {
       'williamboman/mason.nvim',
       'williamboman/mason-lspconfig.nvim',
+      'b0o/SchemaStore.nvim', -- JSON/YAML schemas for jsonls and yamlls
     },
     config = function()
       -- This function runs when an LSP attaches to a buffer
@@ -66,7 +87,7 @@ return {
 
           -- Type information & Documentation
           map('K', vim.lsp.buf.hover, 'Hover Documentation')
-          map('<C-k>', vim.lsp.buf.signature_help, 'Signature Help')
+          -- <C-k> in insert mode only; normal mode is reserved for split navigation
           vim.keymap.set('i', '<C-k>', vim.lsp.buf.signature_help, { buffer = event.buf, desc = 'LSP: Signature Help' })
 
           -- Code Actions & Refactoring
@@ -74,24 +95,44 @@ return {
           map('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
 
           -- Diagnostics (Errors/Warnings)
-          map(']d', vim.diagnostic.goto_next, 'Next [D]iagnostic')
-          map('[d', vim.diagnostic.goto_prev, 'Previous [D]iagnostic')
+          -- Use vim.diagnostic.jump (0.11+ API; goto_next/prev are deprecated)
+          map(']d', function() vim.diagnostic.jump { count = 1, float = true } end, 'Next [D]iagnostic')
+          map('[d', function() vim.diagnostic.jump { count = -1, float = true } end, 'Previous [D]iagnostic')
           map('<leader>e', vim.diagnostic.open_float, 'Show Lin[e] Diagnostics')
           map('<leader>q', vim.diagnostic.setloclist, 'Diagnostic [Q]uickfix List')
 
           -- Symbol Search (using Telescope)
           map('<leader>ds', require('telescope.builtin').lsp_document_symbols, '[D]ocument [S]ymbols')
-          map('<leader>ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
+          map('<leader>Ws', require('telescope.builtin').lsp_dynamic_workspace_symbols, '[W]orkspace [S]ymbols')
 
-          -- Format command
-          map('<leader>f', function()
-            vim.lsp.buf.format { async = true }
-          end, '[F]ormat buffer')
+          -- Formatting is handled by conform.nvim (<leader>cf); LSP format is the fallback
 
           -- Enable inlay hints if supported (for Rust, TypeScript, etc.)
           local client = vim.lsp.get_client_by_id(event.data.client_id)
           if client and client.server_capabilities.inlayHintProvider then
             vim.lsp.inlay_hint.enable(true, { bufnr = event.buf })
+          end
+
+          -- Register rust-analyzer client-side commands that it expects the editor to handle.
+          -- Without these, code lens "N references" clicks produce a "command not supported" error.
+          if client and client.name == 'rust_analyzer' then
+            client.commands['rust-analyzer.showReferences'] = function(command, _ctx)
+              local locations = command.arguments and command.arguments[3]
+              if not locations or #locations == 0 then return end
+              if #locations == 1 then
+                vim.lsp.util.jump_to_location(locations[1], client.offset_encoding)
+              else
+                -- Multiple references: send to quickfix then open with telescope if available
+                local items = vim.lsp.util.locations_to_items(locations, client.offset_encoding)
+                vim.fn.setqflist({}, ' ', { title = 'References', items = items })
+                local ok, tb = pcall(require, 'telescope.builtin')
+                if ok then
+                  tb.quickfix()
+                else
+                  vim.cmd 'copen'
+                end
+              end
+            end
           end
 
           -- Highlight references of word under cursor (like VS Code)
@@ -116,6 +157,19 @@ return {
                 pcall(vim.api.nvim_clear_autocmds, { group = 'lsp-highlight', buffer = event2.buf })
               end,
             })
+          end
+
+          -- Code lens: inline action buttons (e.g. "Run", "Debug", reference counts)
+          -- Supported by rust-analyzer, gopls, and others
+          if client and client.server_capabilities.codeLensProvider then
+            local codelens_augroup = vim.api.nvim_create_augroup('lsp-codelens', { clear = false })
+            vim.api.nvim_create_autocmd({ 'BufEnter', 'CursorHold', 'InsertLeave' }, {
+              buffer = event.buf,
+              group = codelens_augroup,
+              callback = vim.lsp.codelens.refresh,
+            })
+            vim.lsp.codelens.refresh()
+            map('<leader>cc', vim.lsp.codelens.run, '[C]ode Lens a[C]tion')
           end
         end,
       })
@@ -142,6 +196,38 @@ return {
           prefix = '',
         },
       }
+
+      -- Toggle between virtual_text (end-of-line) and virtual_lines (multi-line, great for Rust)
+      vim.keymap.set('n', '<leader>td', function()
+        local current = vim.diagnostic.config()
+        if current and current.virtual_lines then
+          vim.diagnostic.config { virtual_lines = false, virtual_text = true }
+        else
+          vim.diagnostic.config { virtual_lines = { only_current_line = true }, virtual_text = false }
+        end
+      end, { desc = '[T]oggle [D]iagnostic virtual lines' })
+
+      -- Toggle inlay hints globally (can be noisy; handy to flip off temporarily)
+      vim.keymap.set('n', '<leader>ti', function()
+        vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled {})
+      end, { desc = '[T]oggle [I]nlay Hints' })
+
+      -- Toggle between virtual_text (inline) and virtual_lines (multi-line below the code)
+      -- virtual_lines is great for long Rust/TS errors; virtual_text is less noisy day-to-day
+      vim.keymap.set('n', '<leader>td', function()
+        local current = vim.diagnostic.config()
+        if current and current.virtual_lines then
+          vim.diagnostic.config { virtual_lines = false, virtual_text = true }
+        else
+          -- only_current_line keeps the display focused
+          vim.diagnostic.config { virtual_lines = { only_current_line = true }, virtual_text = false }
+        end
+      end, { desc = '[T]oggle [D]iagnostic virtual lines' })
+
+      -- Toggle inlay hints globally (they can be noisy in some codebases)
+      vim.keymap.set('n', '<leader>ti', function()
+        vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled {})
+      end, { desc = '[T]oggle [I]nlay hints' })
 
       -- LSP server capabilities (for autocompletion support)
       local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -262,16 +348,111 @@ return {
         },
       })
 
-      -- Enable language servers for the configured filetypes
-      vim.lsp.enable({ 'pyright', 'rust_analyzer', 'ts_ls', 'clangd', 'gopls' })
+      -- Lua: lua-language-server (lazydev.nvim provides nvim API completion on top)
+      vim.lsp.config('lua_ls', {
+        cmd = { 'lua-language-server' },
+        filetypes = { 'lua' },
+        root_markers = { '.luarc.json', '.luarc.jsonc', '.stylua.toml', 'stylua.toml', '.git' },
+        capabilities = capabilities,
+        settings = {
+          Lua = {
+            completion = { callSnippet = 'Replace' },
+            -- Suppress noisy 'missing-fields' warnings common in config files
+            diagnostics = { disable = { 'missing-fields' } },
+          },
+        },
+      })
 
-      -- Format on save (disabled - was causing non-zero exit codes)
-      -- vim.api.nvim_create_autocmd('BufWritePre', {
-      --   group = vim.api.nvim_create_augroup('lsp-format-on-save', { clear = true }),
-      --   callback = function()
-      --     vim.lsp.buf.format { async = false }
-      --   end,
-      -- })
+      -- Bash/Shell: bash-language-server
+      vim.lsp.config('bashls', {
+        cmd = { 'bash-language-server', 'start' },
+        filetypes = { 'sh', 'bash' },
+        root_markers = { '.git' },
+        capabilities = capabilities,
+      })
+
+      -- JSON: vscode-json-language-server with SchemaStore schemas
+      vim.lsp.config('jsonls', {
+        cmd = { 'vscode-json-language-server', '--stdio' },
+        filetypes = { 'json', 'jsonc' },
+        root_markers = { '.git' },
+        capabilities = capabilities,
+        settings = {
+          json = {
+            schemas = require('schemastore').json.schemas(),
+            validate = { enable = true },
+          },
+        },
+      })
+
+      -- YAML: yaml-language-server with SchemaStore schemas
+      vim.lsp.config('yamlls', {
+        cmd = { 'yaml-language-server', '--stdio' },
+        filetypes = { 'yaml', 'yaml.docker-compose', 'yaml.gitlab' },
+        root_markers = { '.git' },
+        capabilities = capabilities,
+        settings = {
+          yaml = {
+            schemaStore = { enable = false, url = '' }, -- use SchemaStore.nvim instead
+            schemas = require('schemastore').yaml.schemas(),
+          },
+        },
+      })
+
+      -- TOML: taplo
+      vim.lsp.config('taplo', {
+        cmd = { 'taplo', 'lsp', 'stdio' },
+        filetypes = { 'toml' },
+        root_markers = { '.git', 'Cargo.toml', 'pyproject.toml' },
+        capabilities = capabilities,
+      })
+
+      -- Markdown: marksman
+      vim.lsp.config('marksman', {
+        cmd = { 'marksman', 'server' },
+        filetypes = { 'markdown', 'markdown.mdx' },
+        root_markers = { '.git', '.marksman.toml' },
+        capabilities = capabilities,
+      })
+
+      -- Dockerfile: docker-langserver
+      vim.lsp.config('dockerls', {
+        cmd = { 'docker-langserver', '--stdio' },
+        filetypes = { 'dockerfile' },
+        root_markers = { 'Dockerfile', '.git' },
+        capabilities = capabilities,
+      })
+
+      -- ESLint: vscode-eslint-language-server (linting diagnostics as LSP for JS/TS)
+      vim.lsp.config('eslint', {
+        cmd = { 'vscode-eslint-language-server', '--stdio' },
+        filetypes = {
+          'javascript', 'javascriptreact', 'javascript.jsx',
+          'typescript', 'typescriptreact', 'typescript.tsx',
+          'vue', 'svelte',
+        },
+        root_markers = {
+          '.eslintrc', '.eslintrc.js', '.eslintrc.cjs', '.eslintrc.mjs',
+          '.eslintrc.yaml', '.eslintrc.yml', '.eslintrc.json',
+          'eslint.config.js', 'eslint.config.mjs', 'eslint.config.cjs',
+          'package.json', '.git',
+        },
+        capabilities = capabilities,
+        settings = {
+          validate = 'on',
+          run = 'onType',
+          workingDirectory = { mode = 'location' },
+        },
+      })
+
+      -- Enable all configured language servers
+      vim.lsp.enable({
+        'pyright', 'rust_analyzer', 'ts_ls', 'clangd', 'gopls',
+        'lua_ls', 'bashls', 'jsonls', 'yamlls', 'taplo',
+        'marksman', 'dockerls', 'eslint',
+      })
+
+      -- Format-on-save is handled by conform.nvim (see lua/plugins/formatting.lua)
     end,
   },
 }

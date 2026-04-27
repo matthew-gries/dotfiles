@@ -63,6 +63,62 @@ return {
     },
   },
 
+  -- Code outline / symbol tree sidebar (like VS Code's Outline panel)
+  {
+    'stevearc/aerial.nvim',
+    dependencies = {
+      'nvim-treesitter/nvim-treesitter',
+      'nvim-tree/nvim-web-devicons',
+    },
+    keys = {
+      { '<leader>co', '<cmd>AerialToggle!<cr>', desc = '[C]ode [O]utline (Aerial)' },
+    },
+    opts = {
+      backends = { 'lsp', 'treesitter', 'markdown', 'man' },
+      show_guides = true,
+      layout = {
+        max_width = { 40, 0.2 },
+        min_width = 20,
+        default_direction = 'right',
+      },
+    },
+    config = function(_, opts)
+      require('aerial').setup(opts)
+      -- Integrate with telescope: <leader>cs for symbol search via aerial
+      pcall(require('telescope').load_extension, 'aerial')
+      vim.keymap.set('n', '<leader>cs', '<cmd>Telescope aerial<cr>', { desc = '[C]ode [S]ymbols (Aerial)' })
+    end,
+  },
+
+  -- Code outline: symbol tree sidebar (functions, classes, variables)
+  -- Toggle with <leader>co, search symbols with <leader>cs via Telescope
+  {
+    'stevearc/aerial.nvim',
+    dependencies = {
+      'nvim-treesitter/nvim-treesitter',
+      'nvim-tree/nvim-web-devicons',
+    },
+    keys = {
+      { '<leader>co', '<cmd>AerialToggle!<cr>', desc = '[C]ode [O]utline (Aerial)' },
+      { '<leader>cs', '<cmd>Telescope aerial<cr>', desc = '[C]ode [S]ymbols (Aerial+Telescope)' },
+    },
+    opts = {
+      backends = { 'lsp', 'treesitter', 'markdown', 'man' },
+      show_guides = true,
+      layout = {
+        max_width = { 40, 0.2 },
+        min_width = 20,
+        default_direction = 'right',
+      },
+      -- Attach aerial to these filetypes automatically
+      filter_kind = false,
+    },
+    config = function(_, opts)
+      require('aerial').setup(opts)
+      pcall(require('telescope').load_extension, 'aerial')
+    end,
+  },
+
   -- Highlight and navigate TODO comments
   -- Highlights TODO, FIXME, HACK, NOTE, etc. in your code
   -- https://github.com/folke/todo-comments.nvim
