@@ -40,10 +40,13 @@ return {
     dependencies = { 'williamboman/mason.nvim' },
     config = function()
       require('mason-lspconfig').setup {
-        -- Automatically install these language servers
+        -- Automatically install these language servers.
+        -- rust_analyzer is intentionally NOT in this list: it's installed via
+        -- `rustup component add rust-analyzer` so it always matches the active
+        -- toolchain. Mason's standalone build is a separate package that
+        -- drifts from rustc and breaks type inference when out of sync.
         ensure_installed = {
           'pyright', -- Python
-          'rust_analyzer', -- Rust
           'ts_ls', -- TypeScript/JavaScript
           'clangd', -- C/C++
           'gopls', -- Go
@@ -55,6 +58,9 @@ return {
           'marksman', -- Markdown
           'dockerls', -- Dockerfile
           'eslint', -- ESLint as LSP (JS/TS)
+          'html', -- HTML
+          'cssls', -- CSS / SCSS / LESS
+          'emmet_language_server', -- Emmet abbrev expansion (HTML/CSS/JSX)
         },
       }
     end,
@@ -160,15 +166,12 @@ return {
           end
 
           -- Code lens: inline action buttons (e.g. "Run", "Debug", reference counts)
-          -- Supported by rust-analyzer, gopls, and others
+          -- Supported by rust-analyzer, gopls, and others.
+          -- Neovim 0.11+ replaces the manual refresh-on-autocmd pattern with
+          -- vim.lsp.codelens.enable(), which handles refreshing internally.
+          -- vim.lsp.codelens.refresh() is deprecated and removed in 0.13.
           if client and client.server_capabilities.codeLensProvider then
-            local codelens_augroup = vim.api.nvim_create_augroup('lsp-codelens', { clear = false })
-            vim.api.nvim_create_autocmd({ 'BufEnter', 'CursorHold', 'InsertLeave' }, {
-              buffer = event.buf,
-              group = codelens_augroup,
-              callback = vim.lsp.codelens.refresh,
-            })
-            vim.lsp.codelens.refresh()
+            vim.lsp.codelens.enable(true, { bufnr = event.buf })
             map('<leader>cc', vim.lsp.codelens.run, '[C]ode Lens a[C]tion')
           end
         end,
@@ -197,23 +200,8 @@ return {
         },
       }
 
-      -- Toggle between virtual_text (end-of-line) and virtual_lines (multi-line, great for Rust)
-      vim.keymap.set('n', '<leader>td', function()
-        local current = vim.diagnostic.config()
-        if current and current.virtual_lines then
-          vim.diagnostic.config { virtual_lines = false, virtual_text = true }
-        else
-          vim.diagnostic.config { virtual_lines = { only_current_line = true }, virtual_text = false }
-        end
-      end, { desc = '[T]oggle [D]iagnostic virtual lines' })
-
-      -- Toggle inlay hints globally (can be noisy; handy to flip off temporarily)
-      vim.keymap.set('n', '<leader>ti', function()
-        vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled {})
-      end, { desc = '[T]oggle [I]nlay Hints' })
-
-      -- Toggle between virtual_text (inline) and virtual_lines (multi-line below the code)
-      -- virtual_lines is great for long Rust/TS errors; virtual_text is less noisy day-to-day
+      -- Toggle between virtual_text (inline) and virtual_lines (multi-line below the code).
+      -- virtual_lines is great for long Rust/TS errors; virtual_text is less noisy day-to-day.
       vim.keymap.set('n', '<leader>td', function()
         local current = vim.diagnostic.config()
         if current and current.virtual_lines then
@@ -263,6 +251,9 @@ return {
         capabilities = capabilities,
         settings = {
           ['rust-analyzer'] = {
+            diagnostics = {
+              disabled = { 'inactive-code' },
+            },
             cargo = {
               allFeatures = true,
             },
@@ -423,6 +414,99 @@ return {
         capabilities = capabilities,
       })
 
+      -- HTML: vscode-html-language-server
+      -- Note: snippetSupport is already enabled by cmp_nvim_lsp.default_capabilities,
+      -- which is required for property/tag completion to work properly.
+      vim.lsp.config('html', {
+        cmd = { 'vscode-html-language-server', '--stdio' },
+        filetypes = { 'html', 'htmldjango', 'templ' },
+        root_markers = { 'package.json', '.git' },
+        capabilities = capabilities,
+        init_options = {
+          provideFormatter = true,
+          embeddedLanguages = { css = true, javascript = true },
+          configurationSection = { 'html', 'css', 'javascript' },
+        },
+        settings = {
+          html = {
+            format = { templating = true, wrapLineLength = 120, wrapAttributes = 'auto' },
+            hover = { documentation = true, references = true },
+          },
+        },
+      })
+
+      -- CSS / SCSS / LESS: vscode-css-language-server
+      vim.lsp.config('cssls', {
+        cmd = { 'vscode-css-language-server', '--stdio' },
+        filetypes = { 'css', 'scss', 'less' },
+        root_markers = { 'package.json', '.git' },
+        capabilities = capabilities,
+        settings = {
+          css = { validate = true, lint = { unknownAtRules = 'ignore' } },
+          scss = { validate = true, lint = { unknownAtRules = 'ignore' } },
+          less = { validate = true, lint = { unknownAtRules = 'ignore' } },
+        },
+      })
+
+      -- Emmet: HTML/CSS/JSX abbreviation expansion (e.g. `ul>li*3` -> tags)
+      vim.lsp.config('emmet_language_server', {
+        cmd = { 'emmet-language-server', '--stdio' },
+        filetypes = {
+          'html', 'htmldjango', 'css', 'scss', 'sass', 'less',
+          'javascriptreact', 'typescriptreact',
+          'vue', 'svelte', 'eruby',
+        },
+        root_markers = { '.git', 'package.json' },
+        capabilities = capabilities,
+      })
+
+      -- ESLint: vscode-eslint-language-server (linting diagnostics as LSP for JS/TS)
+      vim.lsp.config('eslint', {
+        cmd = { 'vscode-eslint-language-server', '--stdio' },
+        filetypes = {
+          'javascript', 'javascriptreact', 'javascript.jsx',
+          'typescript', 'typescriptreact', 'typescript.tsx',
+          'vue', 'svelte',
+        },
+        root_markers = {
+          '.eslintrc', '.eslintrc.js', '.eslintrc.cjs', '.eslintrc.mjs',
+          '.eslintrc.yaml', '.eslintrc.yml', '.eslintrc.json',
+          'eslint.config.js', 'eslint.config.mjs', 'eslint.config.cjs',
+          'package.json', '.git',
+        },
+        capabilities = capabilities,
+        settings = {
+          validate = 'on',
+          run = 'onType',
+          workingDirectory = { mode = 'location' },
+        },
+      })
+
+      -- CSS/SCSS/Less: vscode-css-language-server
+      vim.lsp.config('cssls', {
+        cmd = { 'vscode-css-language-server', '--stdio' },
+        filetypes = { 'css', 'scss', 'less' },
+        root_markers = { 'package.json', '.git' },
+        capabilities = capabilities,
+        settings = {
+          css = { validate = true, lint = { unknownAtRules = 'ignore' } },
+          scss = { validate = true, lint = { unknownAtRules = 'ignore' } },
+          less = { validate = true, lint = { unknownAtRules = 'ignore' } },
+        },
+      })
+
+      -- Emmet: HTML/CSS/JSX abbreviation expansion (e.g. `ul>li*3` -> tags)
+      vim.lsp.config('emmet_language_server', {
+        cmd = { 'emmet-language-server', '--stdio' },
+        filetypes = {
+          'html', 'htmldjango', 'css', 'scss', 'sass', 'less',
+          'javascriptreact', 'typescriptreact',
+          'vue', 'svelte', 'eruby',
+        },
+        root_markers = { '.git', 'package.json' },
+        capabilities = capabilities,
+      })
+
       -- ESLint: vscode-eslint-language-server (linting diagnostics as LSP for JS/TS)
       vim.lsp.config('eslint', {
         cmd = { 'vscode-eslint-language-server', '--stdio' },
@@ -450,6 +534,7 @@ return {
         'pyright', 'rust_analyzer', 'ts_ls', 'clangd', 'gopls',
         'lua_ls', 'bashls', 'jsonls', 'yamlls', 'taplo',
         'marksman', 'dockerls', 'eslint',
+        'html', 'cssls', 'emmet_language_server',
       })
 
       -- Format-on-save is handled by conform.nvim (see lua/plugins/formatting.lua)

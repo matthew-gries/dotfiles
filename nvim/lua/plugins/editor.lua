@@ -8,7 +8,7 @@ return {
   -- Press 'gs' followed by 2 characters to jump anywhere on screen
   -- https://codeberg.org/andyg/leap.nvim
   {
-    'https://codeberg.org/andyg/leap.nvim',
+    url = 'https://codeberg.org/andyg/leap.nvim',
     name = 'leap',
     lazy = false, -- Load immediately
     config = function()
