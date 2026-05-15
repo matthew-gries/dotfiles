@@ -6,6 +6,9 @@ local config = wezterm.config_builder()
 
 -- This is where you actually apply your config choices.
 
+-- Let terminal apps such as pi distinguish modified keys like Shift+Enter.
+config.enable_kitty_keyboard = true
+
 -- For example, changing the initial geometry for new windows:
 config.initial_cols = 120
 config.initial_rows = 28
@@ -33,11 +36,6 @@ config.keys = { -- Send "CTRL+B" to the terminal when pressing CTRL+B, CTRL+B
 		key = "b",
 		mods = "LEADER|CTRL",
 		action = wezterm.action.SendKey({ key = "b", mods = "CTRL" }),
-	},
-	{
-		key = "Enter",
-		mods = "SHIFT",
-		action = wezterm.action.SendString("\x1b\r"),
 	},
 	-- Pane splitting (tmux standard + convenient alternatives)
 	{
@@ -305,6 +303,18 @@ config.keys = { -- Send "CTRL+B" to the terminal when pressing CTRL+B, CTRL+B
 		key = "d",
 		mods = "LEADER",
 		action = wezterm.action.ShowLauncher,
+	},
+
+	-- Line navigation. Send readline-style keys so shells and pi move within input.
+	{
+		key = "Home",
+		mods = "NONE",
+		action = wezterm.action.SendKey({ key = "a", mods = "CTRL" }),
+	},
+	{
+		key = "End",
+		mods = "NONE",
+		action = wezterm.action.SendKey({ key = "e", mods = "CTRL" }),
 	},
 
 	-- Word navigation with Alt+arrows

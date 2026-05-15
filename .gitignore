@@ -1,0 +1,15 @@
+# Pi runtime state and secrets
+.pi/agent/auth.json
+.pi/agent/sessions/
+.pi/agent/run-history.jsonl
+.pi/agent/intercom/
+.pi/context-mode/
+.pi/memory/
+.pi/npm/
+**/.pi-lens/
+*.db
+*.db-shm
+*.db-wal
+
+# Logs
+**/logs/
