@@ -1,0 +1,37 @@
+{
+  "permission": {
+    "*": "ask",
+    "path": {
+      "*": "allow",
+      "*.env": "deny",
+      "*.env.*": "deny",
+      "*.env.example": "allow",
+      "**/.env": "deny",
+      "**/.env.*": "deny",
+      "**/.env.example": "allow",
+      "*.pem": "deny",
+      "*.key": "deny",
+      "*id_rsa*": "deny",
+      "*id_ed25519*": "deny",
+      ".npmrc": "deny",
+      ".pypirc": "deny",
+      ".netrc": "deny"
+    },
+    "read": "allow",
+    "grep": "allow",
+    "find": "allow",
+    "ls": "allow",
+    "write": "ask",
+    "edit": "ask",
+    "bash": "ask",
+    "mcp": "ask",
+    "skill": {
+      "*": "ask"
+    },
+    "ctx_index": "allow",
+    "ctx_execute": "allow",
+    "ctx_batch_execute": "allow",
+    "todo": "allow",
+    "external_directory": "ask"
+  }
+}

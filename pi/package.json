@@ -6,8 +6,13 @@
   "keywords": [
     "pi-package"
   ],
+  "peerDependencies": {
+    "@earendil-works/pi-coding-agent": "*",
+    "typebox": "*"
+  },
   "pi": {
     "extensions": [
+      "./setup/bootstrap-permission-config.ts",
       "./extensions"
     ],
     "skills": [
