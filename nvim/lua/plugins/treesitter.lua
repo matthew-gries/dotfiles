@@ -26,6 +26,7 @@ return {
         'query', 'vim', 'vimdoc',
         'javascript', 'typescript', 'tsx', 'jsdoc',
         'json',
+        'go', 'gomod', 'gosum', 'gotmpl',
         'rust', 'toml',
       }
 

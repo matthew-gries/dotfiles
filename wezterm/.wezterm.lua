@@ -17,9 +17,9 @@ config.initial_rows = 28
 config.font_size = 14
 -- config.color_scheme = "Gruvbox dark, hard (base16)"
 config.color_scheme = "Gruvbox dark, hard (base16)"
-config.font = wezterm.font("3270 Nerd Font")
+-- config.font = wezterm.font("3270 Nerd Font")
 -- config.color_scheme = "Catppuccin Mocha"
--- config.font = wezterm.font("FantasqueSansM Nerd Font")
+config.font = wezterm.font("FantasqueSansM Nerd Font")
 
 -- Leader key configuration
 local leader_mod = "CTRL"

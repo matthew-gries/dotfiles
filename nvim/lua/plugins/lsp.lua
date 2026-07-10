@@ -330,10 +330,40 @@ return {
         capabilities = capabilities,
         settings = {
           gopls = {
+            gofumpt = true,
+            staticcheck = true,
             completeUnimported = true,
             usePlaceholders = true,
+            semanticTokens = true,
             analyses = {
+              nilness = true,
               unusedparams = true,
+              unusedwrite = true,
+              useany = true,
+            },
+            codelenses = {
+              generate = true,
+              gc_details = true,
+              test = true,
+              tidy = true,
+              run_govulncheck = true,
+              upgrade_dependency = true,
+              vendor = true,
+            },
+            hints = {
+              assignVariableTypes = true,
+              compositeLiteralFields = true,
+              compositeLiteralTypes = true,
+              constantValues = true,
+              functionTypeParameters = true,
+              parameterNames = true,
+              rangeVariableTypes = true,
+            },
+            directoryFilters = {
+              '-.git',
+              '-.vscode',
+              '-.idea',
+              '-node_modules',
             },
           },
         },
@@ -436,53 +466,6 @@ return {
       })
 
       -- CSS / SCSS / LESS: vscode-css-language-server
-      vim.lsp.config('cssls', {
-        cmd = { 'vscode-css-language-server', '--stdio' },
-        filetypes = { 'css', 'scss', 'less' },
-        root_markers = { 'package.json', '.git' },
-        capabilities = capabilities,
-        settings = {
-          css = { validate = true, lint = { unknownAtRules = 'ignore' } },
-          scss = { validate = true, lint = { unknownAtRules = 'ignore' } },
-          less = { validate = true, lint = { unknownAtRules = 'ignore' } },
-        },
-      })
-
-      -- Emmet: HTML/CSS/JSX abbreviation expansion (e.g. `ul>li*3` -> tags)
-      vim.lsp.config('emmet_language_server', {
-        cmd = { 'emmet-language-server', '--stdio' },
-        filetypes = {
-          'html', 'htmldjango', 'css', 'scss', 'sass', 'less',
-          'javascriptreact', 'typescriptreact',
-          'vue', 'svelte', 'eruby',
-        },
-        root_markers = { '.git', 'package.json' },
-        capabilities = capabilities,
-      })
-
-      -- ESLint: vscode-eslint-language-server (linting diagnostics as LSP for JS/TS)
-      vim.lsp.config('eslint', {
-        cmd = { 'vscode-eslint-language-server', '--stdio' },
-        filetypes = {
-          'javascript', 'javascriptreact', 'javascript.jsx',
-          'typescript', 'typescriptreact', 'typescript.tsx',
-          'vue', 'svelte',
-        },
-        root_markers = {
-          '.eslintrc', '.eslintrc.js', '.eslintrc.cjs', '.eslintrc.mjs',
-          '.eslintrc.yaml', '.eslintrc.yml', '.eslintrc.json',
-          'eslint.config.js', 'eslint.config.mjs', 'eslint.config.cjs',
-          'package.json', '.git',
-        },
-        capabilities = capabilities,
-        settings = {
-          validate = 'on',
-          run = 'onType',
-          workingDirectory = { mode = 'location' },
-        },
-      })
-
-      -- CSS/SCSS/Less: vscode-css-language-server
       vim.lsp.config('cssls', {
         cmd = { 'vscode-css-language-server', '--stdio' },
         filetypes = { 'css', 'scss', 'less' },

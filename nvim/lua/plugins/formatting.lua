@@ -20,16 +20,22 @@ return {
       },
     },
     opts = {
-      -- Format-on-save: skippable per-buffer or globally, skipped for large files
+      -- Format-on-save: Go is always formatted on save; other languages stay opt-in.
       format_on_save = function(bufnr)
-        if vim.b[bufnr].disable_autoformat or vim.g.disable_autoformat then
-          return
-        end
         if vim.api.nvim_buf_line_count(bufnr) > 5000 then
           return
         end
+
+        if vim.bo[bufnr].filetype == 'go' then
+          return { timeout_ms = 2000, lsp_format = 'fallback' }
+        end
+
+        if vim.b[bufnr].disable_autoformat or vim.g.disable_autoformat then
+          return
+        end
+
         return { timeout_ms = 500, lsp_format = 'fallback' }
-      end,
+      end, 
 
       -- Per-filetype formatter list (all installed via mason-tool-installer below)
       formatters_by_ft = {
@@ -104,7 +110,13 @@ return {
       local lint_augroup = vim.api.nvim_create_augroup('lint', { clear = true })
       vim.api.nvim_create_autocmd({ 'BufWritePost', 'BufReadPost', 'InsertLeave' }, {
         group = lint_augroup,
-        callback = function()
+        callback = function(args)
+          -- golangci-lint is useful but comparatively expensive; let gopls cover
+          -- live feedback and run the heavier lint pass on save or manually.
+          if vim.bo[args.buf].filetype == 'go' and args.event ~= 'BufWritePost' then
+            return
+          end
+
           lint.try_lint()
         end,
       })
