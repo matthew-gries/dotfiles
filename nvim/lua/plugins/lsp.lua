@@ -46,6 +46,7 @@ return {
         -- toolchain. Mason's standalone build is a separate package that
         -- drifts from rustc and breaks type inference when out of sync.
         ensure_installed = {
+          'jdtls', -- Java
           'pyright', -- Python
           'ts_ls', -- TypeScript/JavaScript
           'clangd', -- C/C++
@@ -62,7 +63,62 @@ return {
           'cssls', -- CSS / SCSS / LESS
           'emmet_language_server', -- Emmet abbrev expansion (HTML/CSS/JSX)
         },
+        -- nvim-jdtls manages JDT LS because Java requires a project workspace
+        -- and custom handlers for decompiled dependency sources.
+        automatic_enable = { exclude = { 'jdtls' } },
       }
+    end,
+  },
+
+  -- Java: JDT LS needs a dedicated workspace and handlers for `jdt://` source files.
+  {
+    'mfussenegger/nvim-jdtls',
+    ft = 'java',
+    dependencies = { 'hrsh7th/cmp-nvim-lsp' },
+    config = function()
+      local jdtls = require 'jdtls'
+      local function start_jdtls(bufnr)
+        vim.api.nvim_buf_call(bufnr, function()
+          local root_dir = require('jdtls.setup').find_root {
+            'settings.gradle.kts',
+            'settings.gradle',
+            'build.gradle.kts',
+            'build.gradle',
+            'gradlew',
+            '.git',
+          }
+
+          if not root_dir then
+            return
+          end
+
+          local workspace_dir = vim.fs.joinpath(
+            vim.fn.stdpath 'data',
+            'jdtls-workspaces',
+            vim.fn.sha256(root_dir)
+          )
+
+          jdtls.start_or_attach {
+            cmd = {
+              vim.fs.joinpath(vim.fn.stdpath 'data', 'mason', 'bin', 'jdtls'),
+              '-data',
+              workspace_dir,
+            },
+            root_dir = root_dir,
+            capabilities = require('cmp_nvim_lsp').default_capabilities(),
+          }
+        end)
+      end
+
+      vim.api.nvim_create_autocmd('FileType', {
+        group = vim.api.nvim_create_augroup('java-jdtls-setup', { clear = true }),
+        pattern = 'java',
+        callback = function(event)
+          start_jdtls(event.buf)
+        end,
+      })
+
+      start_jdtls(vim.api.nvim_get_current_buf())
     end,
   },
 
@@ -86,9 +142,9 @@ return {
           end
 
           -- VS Code-style Navigation Keymaps
-          map('gd', require('telescope.builtin').lsp_definitions, '[G]oto [D]efinition')
-          map('gr', require('telescope.builtin').lsp_references, '[G]oto [R]eferences')
-          map('gi', require('telescope.builtin').lsp_implementations, '[G]oto [I]mplementation')
+          map('gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
+          map('gr', vim.lsp.buf.references, '[G]oto [R]eferences')
+          map('gi', vim.lsp.buf.implementation, '[G]oto [I]mplementation')
           map('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
 
           -- Type information & Documentation
