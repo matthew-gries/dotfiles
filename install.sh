@@ -30,19 +30,27 @@ create_symlink "$DOTFILES_DIR/nvim" "$HOME/.config/nvim"
 create_symlink "$DOTFILES_DIR/wezterm/.wezterm.lua" "$HOME/.wezterm.lua"
 
 # Pi configuration. Local extensions are loaded through the local Pi package
-# declared in pi/settings.json; npm dependencies remain reproducible via its lockfile.
+# declared in pi/settings.json; third-party packages are installed by Pi below.
 create_symlink "$DOTFILES_DIR/pi/settings.json" "$HOME/.pi/agent/settings.json"
-create_symlink "$DOTFILES_DIR/pi/npm" "$HOME/.pi/agent/npm"
 create_symlink "$DOTFILES_DIR/pi/automode.json" "$HOME/.pi/agent/automode.json"
 create_symlink "$DOTFILES_DIR/pi/zentui.json" "$HOME/.pi/agent/zentui.json"
 
-if [ ! -d "$HOME/.pi/agent/npm/node_modules" ]; then
-	if command -v npm >/dev/null 2>&1; then
-		echo "Installing pinned Pi package dependencies..."
-		(cd "$HOME/.pi/agent/npm" && npm ci --omit=dev)
-	else
-		echo "Warning: npm is required to install Pi package dependencies." >&2
-	fi
+# Remove the old repository symlink so Pi can manage its own package directory.
+if [ -L "$HOME/.pi/agent/npm" ]; then
+	echo "Removing obsolete Pi npm symlink: $HOME/.pi/agent/npm"
+	rm "$HOME/.pi/agent/npm"
+fi
+
+if command -v pi >/dev/null 2>&1; then
+	echo "Installing Pi extensions..."
+	while IFS= read -r package || [ -n "$package" ]; do
+		case "$package" in
+			""|\#*) continue ;;
+		esac
+		pi install "$package"
+	done < "$DOTFILES_DIR/pi/extensions.txt"
+else
+	echo "Warning: pi is required to install Pi extensions." >&2
 fi
 
 echo "Done!"
