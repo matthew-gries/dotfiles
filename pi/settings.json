@@ -1,0 +1,25 @@
+{
+  "defaultProvider": "openai-codex",
+  "defaultModel": "gpt-5.6-terra",
+  "defaultThinkingLevel": "xhigh",
+  "packages": [
+    "npm:pi-subagents",
+    "npm:pi-mcp-adapter",
+    "npm:pi-web-access",
+    "npm:pi-btw",
+    "npm:pi-markdown-preview",
+    "npm:pi-lens",
+    "npm:pi-intercom",
+    "npm:@samfp/pi-memory",
+    "../../dotfiles/pi",
+    "npm:@spences10/pi-themes",
+    "npm:@juicesharp/rpiv-todo",
+    "npm:@czottmann/pi-automode",
+    "npm:@narumitw/pi-usage",
+    "npm:pi-powerline-footer"
+  ],
+  "theme": "gruvbox-dark",
+  "enableInstallTelemetry": false,
+  "quietStartup": true,
+  "collapseChangelog": true
+}
