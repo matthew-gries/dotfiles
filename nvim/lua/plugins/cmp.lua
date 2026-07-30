@@ -71,7 +71,7 @@ return {
           ['<C-f>'] = cmp.mapping.scroll_docs(4),
 
           -- Confirm selection
-          ['<CR>'] = cmp.mapping.confirm { select = false }, -- Only confirm explicitly selected items
+          -- ['<CR>'] = cmp.mapping.confirm { select = false }, -- Only confirm explicitly selected items
           ['<Tab>'] = cmp.mapping(function(fallback)
             if cmp.visible() then
               cmp.select_next_item()
