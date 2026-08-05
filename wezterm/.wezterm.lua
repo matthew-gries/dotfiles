@@ -23,9 +23,9 @@ config.font = wezterm.font("FantasqueSansM Nerd Font")
 
 -- Leader key configuration
 local leader_mod = "CTRL"
-if wezterm.target_triple:find("darwin") then
-	leader_mod = "CMD"
-end
+-- if wezterm.target_triple:find("darwin") then
+-- 	leader_mod = "CMD"
+-- end
 config.leader = { key = "b", mods = leader_mod, timeout_milliseconds = 1000 }
 
 -- Set scrollback buffer size
