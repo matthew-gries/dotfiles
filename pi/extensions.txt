@@ -11,3 +11,4 @@ npm:@juicesharp/rpiv-todo
 npm:@czottmann/pi-automode
 npm:@narumitw/pi-usage
 npm:pi-powerline-footer
+npm:pi-vim

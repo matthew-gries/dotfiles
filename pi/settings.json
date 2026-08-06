@@ -16,10 +16,12 @@
     "npm:@juicesharp/rpiv-todo",
     "npm:@czottmann/pi-automode",
     "npm:@narumitw/pi-usage",
-    "npm:pi-powerline-footer"
+    "npm:pi-powerline-footer",
+    "npm:pi-vim"
   ],
   "theme": "gruvbox-dark",
   "enableInstallTelemetry": false,
   "quietStartup": true,
-  "collapseChangelog": true
+  "collapseChangelog": true,
+  "lastChangelogVersion": "0.84.0"
 }

@@ -33,7 +33,7 @@ create_symlink "$DOTFILES_DIR/wezterm/.wezterm.lua" "$HOME/.wezterm.lua"
 # declared in pi/settings.json; third-party packages are installed by Pi below.
 create_symlink "$DOTFILES_DIR/pi/settings.json" "$HOME/.pi/agent/settings.json"
 create_symlink "$DOTFILES_DIR/pi/automode.json" "$HOME/.pi/agent/automode.json"
-create_symlink "$DOTFILES_DIR/pi/zentui.json" "$HOME/.pi/agent/zentui.json"
+create_symlink "$DOTFILES_DIR/pi/subagent.json" "$HOME/.pi/agent/subagent.json"
 
 # Remove the old repository symlink so Pi can manage its own package directory.
 if [ -L "$HOME/.pi/agent/npm" ]; then
