@@ -19,6 +19,9 @@ return {
     end,
   },
 
+  -- Subword motions for camelCase and snake_case identifiers
+  { 'chrisgrieser/nvim-spider', lazy = true },
+
   -- Auto-closing brackets and quotes
   -- https://github.com/windwp/nvim-autopairs
   {

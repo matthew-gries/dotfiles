@@ -1,9 +1,5 @@
 {
-  "defaultProvider": "openai-codex",
-  "defaultModel": "gpt-5.6-terra",
-  "defaultThinkingLevel": "medium",
   "packages": [
-    "../../dotfiles/pi",
     "npm:pi-subagents",
     "npm:pi-mcp-adapter",
     "npm:pi-web-access",

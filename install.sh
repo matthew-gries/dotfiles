@@ -29,11 +29,16 @@ create_symlink "$DOTFILES_DIR/nvim" "$HOME/.config/nvim"
 # wezterm config
 create_symlink "$DOTFILES_DIR/wezterm/.wezterm.lua" "$HOME/.wezterm.lua"
 
-# Pi configuration. Local extensions are loaded through the local Pi package
-# declared in pi/settings.json; third-party packages are installed by Pi below.
+# Pi configuration. Keep Pi's managed npm directory local; only configuration
+# and our dependency-free local extensions are symlinked from this repository.
 create_symlink "$DOTFILES_DIR/pi/settings.json" "$HOME/.pi/agent/settings.json"
 create_symlink "$DOTFILES_DIR/pi/automode.json" "$HOME/.pi/agent/automode.json"
 create_symlink "$DOTFILES_DIR/pi/subagent.json" "$HOME/.pi/agent/subagent.json"
+
+for extension in "$DOTFILES_DIR"/pi/extensions/*.ts; do
+	[ -e "$extension" ] || continue
+	create_symlink "$extension" "$HOME/.pi/agent/extensions/$(basename "$extension")"
+done
 
 # Remove the old repository symlink so Pi can manage its own package directory.
 if [ -L "$HOME/.pi/agent/npm" ]; then
@@ -43,12 +48,14 @@ fi
 
 if command -v pi >/dev/null 2>&1; then
 	echo "Installing Pi extensions..."
-	while IFS= read -r package || [ -n "$package" ]; do
-		case "$package" in
-			""|\#*) continue ;;
-		esac
+	node -e '
+		const settings = require(process.argv[1]);
+		for (const pkg of settings.packages ?? []) {
+			if (typeof pkg === "string") console.log(pkg);
+		}
+	' "$DOTFILES_DIR/pi/settings.json" | while IFS= read -r package; do
 		pi install "$package"
-	done < "$DOTFILES_DIR/pi/extensions.txt"
+	done
 else
 	echo "Warning: pi is required to install Pi extensions." >&2
 fi
