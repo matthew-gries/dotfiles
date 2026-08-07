@@ -279,14 +279,14 @@ config.keys = { -- Send "CTRL+B" to the terminal when pressing CTRL+B, CTRL+B
 	},
 	-- Close current pane
 	{
-		key = "x",
+		key = "q",
 		mods = "LEADER",
 		action = wezterm.action.CloseCurrentPane({ confirm = false }),
 	},
 
 	-- Copy mode and text selection
 	{
-		key = "[",
+		key = "x",
 		mods = "LEADER",
 		action = wezterm.action.ActivateCopyMode,
 	},
