@@ -7,18 +7,39 @@ DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 create_symlink() {
 	local source="$1"
 	local target="$2"
+	local backup suffix
 
-	if [ -L "$target" ]; then
-		echo "Removing existing symlink: $target"
-		rm "$target"
-	elif [ -e "$target" ]; then
-		echo "Backing up existing file: $target -> ${target}.backup"
-		mv "$target" "${target}.backup"
+	if [ -L "$target" ] && [ "$(readlink "$target")" = "$source" ]; then
+		echo "Already linked: $target"
+		return
+	fi
+
+	if [ -e "$target" ] || [ -L "$target" ]; then
+		backup="${target}.backup"
+		suffix=1
+		while [ -e "$backup" ] || [ -L "$backup" ]; do
+			backup="${target}.backup.${suffix}"
+			suffix=$((suffix + 1))
+		done
+		echo "Backing up existing path: $target -> $backup"
+		mv "$target" "$backup"
 	fi
 
 	mkdir -p "$(dirname "$target")"
 	ln -s "$source" "$target"
 	echo "Created symlink: $target -> $source"
+}
+
+link_pi_resources() {
+	local type="$1"
+	local source_dir="$DOTFILES_DIR/pi/$type"
+	local source
+
+	[ -d "$source_dir" ] || return 0
+	for source in "$source_dir"/*; do
+		[ -e "$source" ] || continue
+		create_symlink "$source" "$HOME/.pi/agent/$type/$(basename "$source")"
+	done
 }
 
 echo "Installing dotfiles from $DOTFILES_DIR"
@@ -29,35 +50,39 @@ create_symlink "$DOTFILES_DIR/nvim" "$HOME/.config/nvim"
 # wezterm config
 create_symlink "$DOTFILES_DIR/wezterm/.wezterm.lua" "$HOME/.wezterm.lua"
 
-# Pi configuration. Keep Pi's managed npm directory local; only configuration
-# and our dependency-free local extensions are symlinked from this repository.
-create_symlink "$DOTFILES_DIR/pi/settings.json" "$HOME/.pi/agent/settings.json"
-create_symlink "$DOTFILES_DIR/pi/automode.json" "$HOME/.pi/agent/automode.json"
-create_symlink "$DOTFILES_DIR/pi/subagent.json" "$HOME/.pi/agent/subagent.json"
-
-for extension in "$DOTFILES_DIR"/pi/extensions/*.ts; do
-	[ -e "$extension" ] || continue
-	create_symlink "$extension" "$HOME/.pi/agent/extensions/$(basename "$extension")"
-done
-
-# Remove the old repository symlink so Pi can manage its own package directory.
-if [ -L "$HOME/.pi/agent/npm" ]; then
-	echo "Removing obsolete Pi npm symlink: $HOME/.pi/agent/npm"
-	rm "$HOME/.pi/agent/npm"
-fi
-
+# Pi manages its own settings, credentials, packages, and runtime files.
+# If Pi is absent, leave its directory untouched while still installing other dotfiles.
 if command -v pi >/dev/null 2>&1; then
-	echo "Installing Pi extensions..."
-	node -e '
-		const settings = require(process.argv[1]);
-		for (const pkg of settings.packages ?? []) {
-			if (typeof pkg === "string") console.log(pkg);
-		}
-	' "$DOTFILES_DIR/pi/settings.json" | while IFS= read -r package; do
-		pi install "$package"
+	# Migrate only the obsolete repository-owned npm link, not an external npm dir.
+	npm_dir="$HOME/.pi/agent/npm"
+	if [ -L "$npm_dir" ]; then
+		npm_link="$(readlink "$npm_dir")"
+		case "$npm_link" in
+			"$DOTFILES_DIR"/pi/npm|"$DOTFILES_DIR"/.pi/agent/npm)
+				echo "Removing obsolete Pi npm symlink: $npm_dir"
+				rm "$npm_dir"
+				;;
+		esac
+	fi
+
+	echo "Installing Pi packages from $DOTFILES_DIR/pi/packages.txt"
+	while IFS= read -r package || [ -n "$package" ]; do
+		# Ignore blank and comment lines; tolerate whitespace and CRLF in the list.
+		package="${package#"${package%%[![:space:]]*}"}"
+		package="${package%"${package##*[![:space:]]}"}"
+		case "$package" in ''|\#*) continue ;; esac
+		echo "Installing Pi package: $package"
+		if ! pi install "$package"; then
+			echo "Failed to install Pi package: $package" >&2
+			exit 1
+		fi
+	done < "$DOTFILES_DIR/pi/packages.txt"
+
+	for type in extensions prompts skills themes; do
+		link_pi_resources "$type"
 	done
 else
-	echo "Warning: pi is required to install Pi extensions." >&2
+	echo "Warning: pi not found; skipping Pi packages and resource links." >&2
 fi
 
 echo "Done!"

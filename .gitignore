@@ -1,4 +1,10 @@
 # Pi runtime state and secrets
+pi/settings.json
+pi/auth.json
+pi/npm/
+pi/install/
+pi/sessions/
+pi/**/node_modules/
 .pi/agent/auth.json
 .pi/agent/sessions/
 .pi/agent/run-history.jsonl

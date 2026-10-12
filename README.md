@@ -7,6 +7,7 @@ This repository contains my personal dotfiles for cross-platform development env
 - **Terminal**: WezTerm with tmux-like keybindings
 - **Shell**: Zsh with Oh My Zsh and Gruvbox theme
 - **Editor**: Neovim with Kickstart configuration
+- **Pi**: Package install list, local extensions, and prompt templates
 
 ## Prerequisites
 
@@ -291,6 +292,10 @@ dotfiles/
 ├── nvim/                     # Neovim configuration (Kickstart-based)
 ├── wezterm/
 │   └── .wezterm.lua          # WezTerm terminal configuration
+├── pi/
+│   ├── packages.txt          # Sources passed to pi install
+│   ├── extensions/           # Locally maintained Pi extensions
+│   └── prompts/              # Locally maintained Pi prompt templates
 ├── macos/
 │   └── .zshrc                # Zsh shell configuration
 ├── install.sh                # Symlink installation script
@@ -317,12 +322,19 @@ dotfiles/
    This will create symlinks for:
    - `nvim/` -> `~/.config/nvim`
    - `wezterm/.wezterm.lua` -> `~/.wezterm.lua`
+   - Individual files in `pi/extensions/` and `pi/prompts/` -> their corresponding `~/.pi/agent/` directories (and entries in `pi/skills/` or `pi/themes/` if added later)
 
-   If existing files are found, they will be backed up with a `.backup` suffix.
+   If Pi is on `PATH`, the script also installs each source listed in `pi/packages.txt` using `pi install`. If Pi is unavailable, it warns and skips **only** Pi setup. Conflicting target paths are backed up without overwriting previous backups; correctly linked paths are left alone on reruns.
 
 4. Restart your terminal and enjoy!
 
 ## Customization
+
+### Pi
+
+Install Pi separately before running `./install.sh` if you want its packages and resource links set up. Maintain third-party package sources one per line in `pi/packages.txt` (blank lines and `#` comments are allowed); rerunning the script calls `pi install` for each one. Pi discovers the symlinked local resources automatically. Use `/reload` in an open Pi session to pick up changes.
+
+Only owned resource entries are linked; neither the whole `.pi` directory nor its `extensions/` or `prompts/` directories are linked. Pi keeps `~/.pi/agent/settings.json`, authentication, its `npm/` directory, sessions, and other runtime data locally. **Do not add these files or any `node_modules/` directory to the dotfiles repository.**
 
 ### WezTerm
 - Modify `.wezterm.lua` to change fonts, colors, or keybindings

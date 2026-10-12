@@ -1,0 +1,8 @@
+# Personal Pi packages; one source per line. Installed by install.sh with pi install.
+npm:pi-web-access
+npm:@juicesharp/rpiv-ask-user-question
+npm:@juicesharp/rpiv-todo
+npm:@juicesharp/rpiv-btw
+npm:pi-powerline-footer
+npm:pi-subagents
+npm:@narumitw/pi-plan-mode
