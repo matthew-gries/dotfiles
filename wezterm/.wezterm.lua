@@ -363,6 +363,27 @@ if wezterm.target_triple:find("windows") then
 			label = "CMD",
 			args = { "cmd.exe" },
 		},
+        {
+            label = "Developer PowerShell VS 2026",
+            args = {
+              'C:\\Windows\\SysWOW64\\WindowsPowerShell\\v1.0\\powershell.exe',
+              '-noe',
+              '-c',
+              '&{Import-Module "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\Tools\\Microsoft.VisualStudio.DevShell.dll"; Enter-VsDevShell c06a35b8}',
+            },
+        },
+        {
+            label = "MSYS2 Bash",
+            args = {
+              'C:\\msys64\\msys2_shell.cmd',
+              '-defterm',
+              '-here',
+              '-no-start',
+              '-ucrt64',
+              '-shell',
+              'zsh'
+            },
+        }
 	}
 end
 
